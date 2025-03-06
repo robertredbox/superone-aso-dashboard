@@ -60,9 +60,9 @@ export function DashboardTab() {
             <CardTitle className="text-sm font-medium">YTD Downloads</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(28460)}</div>
+            <div className="text-2xl font-bold">{formatNumber(2207)}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              +12.5% from last year
+              -91.3% from last year
             </p>
           </CardContent>
         </Card>
