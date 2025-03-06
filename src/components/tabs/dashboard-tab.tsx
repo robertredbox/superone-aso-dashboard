@@ -152,7 +152,6 @@ const appData = {
     { name: "Astonishing Basketball Manager", id: "1589313811", rating: 4.7 }
   ],
   downloads: realDownloads, // Use real data
-  categoryRanking: getRandomDateData(30).map(item => ({ ...item, value: Math.floor(Math.random() * 100) + 1 })),
   conversionRate: getRandomDateData(30).map(item => ({ ...item, value: (Math.random() * 5) + 1 })),
   reviews: [
     { star: 5, count: 20 },
@@ -193,12 +192,12 @@ export function DashboardTab() {
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Average Position</CardTitle>
+            <CardTitle className="text-sm font-medium">Category Position</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">#42</div>
+            <div className="text-2xl font-bold">Unranked</div>
             <p className="text-xs text-muted-foreground mt-1">
-              In Games category
+              Not currently ranked in categories
             </p>
           </CardContent>
         </Card>
@@ -246,28 +245,24 @@ export function DashboardTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Category Ranking (YTD)</CardTitle>
+            <CardTitle>App Store Status</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={appData.categoryRanking}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis reversed domain={[1, 100]} />
-                <Tooltip />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="value" 
-                  name="Rank"
-                  stroke="#82ca9d" 
-                  activeDot={{ r: 8 }} 
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="flex flex-col h-full items-center justify-center text-center p-6">
+              <div className="text-6xl mb-4">📊</div>
+              <h3 className="text-xl font-bold mb-2">No Ranking Data Available</h3>
+              <p className="text-muted-foreground mb-4">
+                Super.One Fan Battle is currently not ranked in any App Store categories.
+              </p>
+              <p className="text-sm">
+                This could be due to:
+              </p>
+              <ul className="list-disc text-sm text-left mt-2 space-y-1">
+                <li>App is new or recently updated</li>
+                <li>Not enough downloads to rank in competitive categories</li>
+                <li>Changes in App Store ranking algorithm</li>
+              </ul>
+            </div>
           </CardContent>
         </Card>
         
