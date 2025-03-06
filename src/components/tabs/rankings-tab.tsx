@@ -8,46 +8,85 @@ import {
 } from "recharts";
 import { getRandomDateData } from "@/lib/utils";
 
-// Generate simulated ranking data
-const generateRankingData = (startRank: number, variability: number) => {
-  return Array.from({ length: 365 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - 365 + i);
-    
-    // Create some variability in the ranking
-    const variation = Math.floor(Math.random() * variability) - Math.floor(variability / 2);
-    const rank = Math.max(1, startRank + variation);
-    
-    return {
-      date: date.toISOString().split('T')[0],
-      rank
-    };
-  });
-};
+// Sample historical data
+const historicalRankingData = [
+  {
+    date: "2023-07-01",
+    overallRank: 64,
+    gamesRank: 53,
+    triviaRank: 22,
+    sportsRank: 41
+  },
+  {
+    date: "2023-08-01",
+    overallRank: 58,
+    gamesRank: 48,
+    triviaRank: 19,
+    sportsRank: 37
+  },
+  {
+    date: "2023-09-01",
+    overallRank: 52,
+    gamesRank: 42,
+    triviaRank: 15,
+    sportsRank: 33
+  },
+  {
+    date: "2023-10-01",
+    overallRank: 48,
+    gamesRank: 39,
+    triviaRank: 13,
+    sportsRank: 31
+  },
+  {
+    date: "2023-11-01",
+    overallRank: 45,
+    gamesRank: 37,
+    triviaRank: 12,
+    sportsRank: 29
+  },
+  {
+    date: "2023-12-01",
+    overallRank: 43,
+    gamesRank: 35,
+    triviaRank: 12,
+    sportsRank: 28
+  },
+  {
+    date: "2024-01-01",
+    overallRank: 42,
+    gamesRank: 35,
+    triviaRank: 12,
+    sportsRank: 28
+  },
+  {
+    date: "2024-02-01",
+    overallRank: 0,
+    gamesRank: 0,
+    triviaRank: 0,
+    sportsRank: 0
+  },
+  {
+    date: "2024-03-01",
+    overallRank: 0,
+    gamesRank: 0,
+    triviaRank: 0,
+    sportsRank: 0
+  }
+];
 
-// Sample data for different categories
-const overallRanking = generateRankingData(42, 20);
-const gamesRanking = generateRankingData(35, 15);
-const triviaRanking = generateRankingData(12, 8);
-const sportsRanking = generateRankingData(28, 12);
-
-// Format data for charts by taking every 30th point to avoid overcrowding
-const formatChartData = (data: any[], interval: number = 30) => {
-  return data.filter((_, i) => i % interval === 0);
-};
-
-// Sample data for country rankings
-const countryRankings = [
-  { country: "United States", rank: 42, change: -3 },
-  { country: "United Kingdom", rank: 38, change: +2 },
-  { country: "Canada", rank: 45, change: -1 },
-  { country: "Australia", rank: 33, change: +5 },
-  { country: "Germany", rank: 51, change: -2 },
-  { country: "France", rank: 47, change: 0 },
-  { country: "Spain", rank: 36, change: +4 },
-  { country: "Italy", rank: 49, change: -6 },
-  { country: "Brazil", rank: 44, change: +1 },
-  { country: "Mexico", rank: 39, change: +3 }
+// Sample historical country rankings
+const countryHistoricalRankings = [
+  { country: "United States", lastRanked: "January 2024", lastRank: 42 },
+  { country: "United Kingdom", lastRanked: "January 2024", lastRank: 38 },
+  { country: "Canada", lastRanked: "January 2024", lastRank: 45 },
+  { country: "Australia", lastRanked: "January 2024", lastRank: 33 },
+  { country: "Germany", lastRanked: "January 2024", lastRank: 51 },
+  { country: "France", lastRanked: "January 2024", lastRank: 47 },
+  { country: "Spain", lastRanked: "January 2024", lastRank: 36 },
+  { country: "Italy", lastRanked: "January 2024", lastRank: 49 },
+  { country: "Brazil", lastRanked: "January 2024", lastRank: 44 },
+  { country: "Mexico", lastRanked: "January 2024", lastRank: 39 }
 ];
 
 export function RankingsTab() {
@@ -59,9 +98,9 @@ export function RankingsTab() {
             <CardTitle className="text-sm font-medium">Overall App Ranking</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">#42</div>
+            <div className="text-2xl font-bold">Unranked</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-green-500">↑3</span> from last month
+              Not currently in rankings
             </p>
           </CardContent>
         </Card>
@@ -71,9 +110,9 @@ export function RankingsTab() {
             <CardTitle className="text-sm font-medium">Games Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">#35</div>
+            <div className="text-2xl font-bold">Unranked</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-green-500">↑5</span> from last month
+              Not currently in rankings
             </p>
           </CardContent>
         </Card>
@@ -83,9 +122,9 @@ export function RankingsTab() {
             <CardTitle className="text-sm font-medium">Trivia Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">#12</div>
+            <div className="text-2xl font-bold">Unranked</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-green-500">↑2</span> from last month
+              Not currently in rankings
             </p>
           </CardContent>
         </Card>
@@ -95,9 +134,9 @@ export function RankingsTab() {
             <CardTitle className="text-sm font-medium">Sports Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">#28</div>
+            <div className="text-2xl font-bold">Unranked</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-red-500">↓4</span> from last month
+              Not currently in rankings
             </p>
           </CardContent>
         </Card>
@@ -106,22 +145,22 @@ export function RankingsTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Overall Ranking Trend (YTD)</CardTitle>
+            <CardTitle>Historical Ranking Trend</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={formatChartData(overallRanking)}
+                data={historicalRankingData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis reversed domain={[1, 100]} />
+                <YAxis reversed domain={[0, 100]} />
                 <Tooltip />
                 <Legend />
                 <Line 
                   type="monotone" 
-                  dataKey="rank" 
+                  dataKey="overallRank" 
                   name="Overall Rank"
                   stroke="#8884d8" 
                   activeDot={{ r: 8 }} 
@@ -133,39 +172,37 @@ export function RankingsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Category Rankings Comparison</CardTitle>
+            <CardTitle>Category Historical Rankings</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={formatChartData(triviaRanking)}
+                data={historicalRankingData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis reversed domain={[1, 100]} />
+                <YAxis reversed domain={[0, 100]} />
                 <Tooltip />
                 <Legend />
                 <Line 
                   type="monotone" 
-                  dataKey="rank" 
+                  dataKey="triviaRank" 
                   name="Trivia Rank"
                   stroke="#8884d8" 
                   activeDot={{ r: 8 }} 
                 />
                 <Line 
                   type="monotone" 
-                  dataKey="rank" 
+                  dataKey="gamesRank" 
                   name="Games Rank"
                   stroke="#82ca9d" 
-                  data={formatChartData(gamesRanking)}
                 />
                 <Line 
                   type="monotone" 
-                  dataKey="rank" 
+                  dataKey="sportsRank" 
                   name="Sports Rank"
                   stroke="#ffc658" 
-                  data={formatChartData(sportsRanking)}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -175,7 +212,10 @@ export function RankingsTab() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Country-Specific Rankings</CardTitle>
+          <CardTitle>Most Recent Country Rankings Data</CardTitle>
+          <p className="text-sm text-muted-foreground mt-1">
+            Note: App is currently unranked in all countries. Below shows last known rankings.
+          </p>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -183,25 +223,16 @@ export function RankingsTab() {
               <thead>
                 <tr className="bg-muted/50">
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Country</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Current Rank</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Change (30 days)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Ranked</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Known Rank</th>
                 </tr>
               </thead>
               <tbody className="bg-card divide-y divide-border">
-                {countryRankings.map((country, index) => (
+                {countryHistoricalRankings.map((country, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">{country.country}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">#{country.rank}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className={`${
-                        country.change > 0 ? 'text-green-500' : 
-                        country.change < 0 ? 'text-red-500' : 
-                        'text-gray-500'
-                      }`}>
-                        {country.change > 0 ? '↑' : country.change < 0 ? '↓' : '–'}
-                        {Math.abs(country.change)}
-                      </span>
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">{country.lastRanked}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">#{country.lastRank}</td>
                   </tr>
                 ))}
               </tbody>
