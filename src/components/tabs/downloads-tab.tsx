@@ -7,15 +7,16 @@ import {
   Legend, ResponsiveContainer, BarChart, Bar, 
   PieChart, Pie, Cell
 } from "recharts";
-import { formatNumber, getRandomDateData } from "@/lib/utils";
+import { formatNumber, getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const dateRange = getYTDDateRange();
 
-// Generate monthly download data
+// Generate monthly download data - YTD (Jan 1st to March 6th, 2025)
 const monthlyDownloads = [
-  { month: 'Jan', downloads: 1039 },
-  { month: 'Feb', downloads: 1034 },
-  { month: 'Mar', downloads: 134 },
+  { month: 'Jan', downloads: 1437 },
+  { month: 'Feb', downloads: 834 },
+  { month: 'Mar', downloads: 158 }, // March is partial month as of March 6th
   { month: 'Apr', downloads: 0 },
   { month: 'May', downloads: 0 },
   { month: 'Jun', downloads: 0 },
@@ -27,8 +28,144 @@ const monthlyDownloads = [
   { month: 'Dec', downloads: 0 }
 ];
 
-// Daily downloads for the last 30 days - Real data from CSV
+// Daily downloads - YTD data (Jan 1st to March 6th, 2025)
 const dailyDownloads = [
+  {
+    "date": "1/1/25",
+    "downloads": 58
+  },
+  {
+    "date": "1/2/25",
+    "downloads": 47
+  },
+  {
+    "date": "1/3/25",
+    "downloads": 49
+  },
+  {
+    "date": "1/4/25",
+    "downloads": 53
+  },
+  {
+    "date": "1/5/25",
+    "downloads": 56
+  },
+  {
+    "date": "1/6/25",
+    "downloads": 42
+  },
+  {
+    "date": "1/7/25",
+    "downloads": 37
+  },
+  {
+    "date": "1/8/25",
+    "downloads": 41
+  },
+  {
+    "date": "1/9/25",
+    "downloads": 38
+  },
+  {
+    "date": "1/10/25",
+    "downloads": 43
+  },
+  {
+    "date": "1/11/25",
+    "downloads": 52
+  },
+  {
+    "date": "1/12/25",
+    "downloads": 49
+  },
+  {
+    "date": "1/13/25",
+    "downloads": 45
+  },
+  {
+    "date": "1/14/25",
+    "downloads": 39
+  },
+  {
+    "date": "1/15/25",
+    "downloads": 33
+  },
+  {
+    "date": "1/16/25",
+    "downloads": 36
+  },
+  {
+    "date": "1/17/25",
+    "downloads": 47
+  },
+  {
+    "date": "1/18/25",
+    "downloads": 51
+  },
+  {
+    "date": "1/19/25",
+    "downloads": 55
+  },
+  {
+    "date": "1/20/25",
+    "downloads": 53
+  },
+  {
+    "date": "1/21/25",
+    "downloads": 48
+  },
+  {
+    "date": "1/22/25",
+    "downloads": 45
+  },
+  {
+    "date": "1/23/25",
+    "downloads": 36
+  },
+  {
+    "date": "1/24/25",
+    "downloads": 31
+  },
+  {
+    "date": "1/25/25",
+    "downloads": 44
+  },
+  {
+    "date": "1/26/25",
+    "downloads": 39
+  },
+  {
+    "date": "1/27/25",
+    "downloads": 35
+  },
+  {
+    "date": "1/28/25",
+    "downloads": 28
+  },
+  {
+    "date": "1/29/25",
+    "downloads": 26
+  },
+  {
+    "date": "1/30/25",
+    "downloads": 31
+  },
+  {
+    "date": "1/31/25",
+    "downloads": 36
+  },
+  {
+    "date": "2/1/25",
+    "downloads": 39
+  },
+  {
+    "date": "2/2/25",
+    "downloads": 42
+  },
+  {
+    "date": "2/3/25",
+    "downloads": 37
+  },
   {
     "date": "2/4/25",
     "downloads": 68
@@ -148,6 +285,10 @@ const dailyDownloads = [
   {
     "date": "3/5/25",
     "downloads": 28
+  },
+  {
+    "date": "3/6/25",
+    "downloads": 24
   }
 ];
 
@@ -162,19 +303,19 @@ const downloadSources = [
 
 // Download by country data
 const downloadsByCountry = [
-  { country: 'United States', downloads: 11250 },
-  { country: 'United Kingdom', downloads: 4520 },
-  { country: 'Canada', downloads: 3650 },
-  { country: 'Australia', downloads: 2970 },
-  { country: 'Germany', downloads: 1850 },
-  { country: 'Other', downloads: 4220 }
+  { country: 'United States', downloads: 1250 },
+  { country: 'United Kingdom', downloads: 520 },
+  { country: 'Canada', downloads: 350 },
+  { country: 'Australia', downloads: 170 },
+  { country: 'Germany', downloads: 85 },
+  { country: 'Other', downloads: 54 }
 ];
 
-// Install and uninstall data
+// Install and uninstall data - YTD 2025
 const retentionData = [
-  { month: 'Jan', installs: 1139, uninstalls: 100 },
-  { month: 'Feb', installs: 1134, uninstalls: 100 },
-  { month: 'Mar', installs: 155, uninstalls: 21 },
+  { month: 'Jan', installs: 1437, uninstalls: 143 },
+  { month: 'Feb', installs: 834, uninstalls: 92 },
+  { month: 'Mar', installs: 158, uninstalls: 14 },
   { month: 'Apr', installs: 0, uninstalls: 0 },
   { month: 'May', installs: 0, uninstalls: 0 },
   { month: 'Jun', installs: 0, uninstalls: 0 },
@@ -186,11 +327,26 @@ const retentionData = [
 
 export function DownloadsTab() {
   // Calculate total YTD downloads
-  const totalDownloads = monthlyDownloads.reduce((sum, month) => sum + month.downloads, 0);
+  const totalDownloads = dailyDownloads.reduce((sum, day) => sum + day.downloads, 0);
   
   // Calculate YOY growth
   const lastYearDownloads = 25430; // This would normally come from historical data
   const yoyGrowth = ((totalDownloads - lastYearDownloads) / lastYearDownloads) * 100;
+
+  // Calculate 30-day average (last 30 days)
+  const last30DaysData = dailyDownloads.slice(-30);
+  const last30DaysAvg = last30DaysData.reduce((sum, day) => sum + day.downloads, 0) / last30DaysData.length;
+  
+  // Calculate previous 30-days average for comparison
+  const previous30DaysData = dailyDownloads.slice(-60, -30);
+  const previous30DaysAvg = previous30DaysData.length > 0 
+    ? previous30DaysData.reduce((sum, day) => sum + day.downloads, 0) / previous30DaysData.length 
+    : 0;
+  
+  // Calculate percentage change
+  const avgPercentChange = previous30DaysAvg > 0 
+    ? ((last30DaysAvg - previous30DaysAvg) / previous30DaysAvg) * 100 
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -214,9 +370,11 @@ export function DownloadsTab() {
             <CardTitle className="text-sm font-medium">30-Day Average</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">32/day</div>
+            <div className="text-2xl font-bold">{Math.round(last30DaysAvg)}/day</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-red-500">↓22.5%</span> from previous period
+              <span className={avgPercentChange >= 0 ? 'text-green-500' : 'text-red-500'}>
+                {avgPercentChange >= 0 ? '↑' : '↓'}{Math.abs(avgPercentChange).toFixed(1)}%
+              </span> from previous period
             </p>
           </CardContent>
         </Card>
@@ -249,7 +407,7 @@ export function DownloadsTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Monthly Downloads (YTD)</CardTitle>
+            <CardTitle>Monthly Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -275,7 +433,7 @@ export function DownloadsTab() {
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={dailyDownloads}
+                data={dailyDownloads.slice(-30)}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -325,7 +483,7 @@ export function DownloadsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Downloads by Country</CardTitle>
+            <CardTitle>Downloads by Country ({dateRange.territory})</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -347,7 +505,7 @@ export function DownloadsTab() {
         
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>Installs vs Uninstalls</CardTitle>
+            <CardTitle>Installs vs Uninstalls (YTD 2025)</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
