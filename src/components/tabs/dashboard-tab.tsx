@@ -736,7 +736,7 @@ export function DashboardTab() {
                 tickFormatter={(value) => `${value}%`}
               />
               <Tooltip 
-                formatter={(value) => [`${value.toFixed(2)}%`, 'Conversion Rate']}
+                formatter={(value: number) => [`${value.toFixed(2)}%`, 'Conversion Rate']}
                 contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
               />
               <Line 
