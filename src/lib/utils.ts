@@ -47,3 +47,16 @@ export function getRandomDateData(days: number) {
   
   return data;
 }
+
+export function getYTDDateRange() {
+  const today = new Date();
+  const startDate = new Date(today.getFullYear(), 0, 1); // January 1st of current year
+  
+  return {
+    start: startDate,
+    end: today,
+    formattedStart: formatDate(startDate),
+    formattedEnd: formatDate(today),
+    territory: 'United States' // Default territory
+  };
+}
