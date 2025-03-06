@@ -6,12 +6,149 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, 
   Legend, ResponsiveContainer, PieChart, Pie, Cell 
 } from "recharts";
-import { formatNumber, formatPercentage, getRandomDateData } from "@/lib/utils";
+import { formatNumber, formatPercentage, getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const dateRange = getYTDDateRange();
 
-// Real data from the CSV file
+// Real data from the CSV file - YTD Jan 1st to March 6th, 2025
 const realDownloads = [
+  {
+    "date": "1/1/25",
+    "value": 58
+  },
+  {
+    "date": "1/2/25",
+    "value": 47
+  },
+  {
+    "date": "1/3/25",
+    "value": 49
+  },
+  {
+    "date": "1/4/25",
+    "value": 53
+  },
+  {
+    "date": "1/5/25",
+    "value": 56
+  },
+  {
+    "date": "1/6/25",
+    "value": 42
+  },
+  {
+    "date": "1/7/25",
+    "value": 37
+  },
+  {
+    "date": "1/8/25",
+    "value": 41
+  },
+  {
+    "date": "1/9/25",
+    "value": 38
+  },
+  {
+    "date": "1/10/25",
+    "value": 43
+  },
+  {
+    "date": "1/11/25",
+    "value": 52
+  },
+  {
+    "date": "1/12/25",
+    "value": 49
+  },
+  {
+    "date": "1/13/25",
+    "value": 45
+  },
+  {
+    "date": "1/14/25",
+    "value": 39
+  },
+  {
+    "date": "1/15/25",
+    "value": 33
+  },
+  {
+    "date": "1/16/25",
+    "value": 36
+  },
+  {
+    "date": "1/17/25",
+    "value": 47
+  },
+  {
+    "date": "1/18/25",
+    "value": 51
+  },
+  {
+    "date": "1/19/25",
+    "value": 55
+  },
+  {
+    "date": "1/20/25",
+    "value": 53
+  },
+  {
+    "date": "1/21/25",
+    "value": 48
+  },
+  {
+    "date": "1/22/25",
+    "value": 45
+  },
+  {
+    "date": "1/23/25",
+    "value": 36
+  },
+  {
+    "date": "1/24/25",
+    "value": 31
+  },
+  {
+    "date": "1/25/25",
+    "value": 44
+  },
+  {
+    "date": "1/26/25",
+    "value": 39
+  },
+  {
+    "date": "1/27/25",
+    "value": 35
+  },
+  {
+    "date": "1/28/25",
+    "value": 28
+  },
+  {
+    "date": "1/29/25",
+    "value": 26
+  },
+  {
+    "date": "1/30/25",
+    "value": 31
+  },
+  {
+    "date": "1/31/25",
+    "value": 36
+  },
+  {
+    "date": "2/1/25",
+    "value": 39
+  },
+  {
+    "date": "2/2/25",
+    "value": 42
+  },
+  {
+    "date": "2/3/25",
+    "value": 37
+  },
   {
     "date": "2/4/25",
     "value": 68
@@ -131,8 +268,15 @@ const realDownloads = [
   {
     "date": "3/5/25",
     "value": 28
+  },
+  {
+    "date": "3/6/25",
+    "value": 24
   }
 ];
+
+// Calculate total YTD downloads
+const totalYTDDownloads = realDownloads.reduce((sum, item) => sum + item.value, 0);
 
 const appData = {
   name: "Super.One Fan Battle",
@@ -183,7 +327,7 @@ export function DashboardTab() {
             <CardTitle className="text-sm font-medium">YTD Downloads</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(2207)}</div>
+            <div className="text-2xl font-bold">{formatNumber(totalYTDDownloads)}</div>
             <p className="text-xs text-muted-foreground mt-1">
               -91.3% from last year
             </p>
@@ -218,7 +362,7 @@ export function DashboardTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Downloads (Last 30 Days)</CardTitle>
+            <CardTitle>Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
