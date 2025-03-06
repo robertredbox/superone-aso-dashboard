@@ -9,14 +9,14 @@ import {
 } from "recharts";
 import { formatNumber, getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#d884d8', '#d8d884'];
 const dateRange = getYTDDateRange();
 
-// Generate monthly download data - YTD (Jan 1st to March 6th, 2025)
+// Generate monthly download data - YTD (Jan 1st to March 5th, 2025)
 const monthlyDownloads = [
   { month: 'Jan', downloads: 1437 },
-  { month: 'Feb', downloads: 834 },
-  { month: 'Mar', downloads: 158 }, // March is partial month as of March 6th
+  { month: 'Feb', downloads: 684 },
+  { month: 'Mar', downloads: 86 }, // March is partial month as of March 5th
   { month: 'Apr', downloads: 0 },
   { month: 'May', downloads: 0 },
   { month: 'Jun', downloads: 0 },
@@ -28,143 +28,143 @@ const monthlyDownloads = [
   { month: 'Dec', downloads: 0 }
 ];
 
-// Daily downloads - YTD data (Jan 1st to March 6th, 2025)
+// Daily downloads - YTD data (Jan 1st to March 5th, 2025)
 const dailyDownloads = [
   {
     "date": "1/1/25",
-    "downloads": 58
+    "downloads": 13
   },
   {
     "date": "1/2/25",
-    "downloads": 47
+    "downloads": 13
   },
   {
     "date": "1/3/25",
-    "downloads": 49
+    "downloads": 10
   },
   {
     "date": "1/4/25",
-    "downloads": 53
+    "downloads": 7
   },
   {
     "date": "1/5/25",
-    "downloads": 56
+    "downloads": 14
   },
   {
     "date": "1/6/25",
-    "downloads": 42
+    "downloads": 11
   },
   {
     "date": "1/7/25",
-    "downloads": 37
+    "downloads": 10
   },
   {
     "date": "1/8/25",
-    "downloads": 41
+    "downloads": 13
   },
   {
     "date": "1/9/25",
-    "downloads": 38
+    "downloads": 16
   },
   {
     "date": "1/10/25",
-    "downloads": 43
+    "downloads": 13
   },
   {
     "date": "1/11/25",
-    "downloads": 52
+    "downloads": 13
   },
   {
     "date": "1/12/25",
-    "downloads": 49
+    "downloads": 14
   },
   {
     "date": "1/13/25",
-    "downloads": 45
+    "downloads": 12
   },
   {
     "date": "1/14/25",
-    "downloads": 39
+    "downloads": 13
   },
   {
     "date": "1/15/25",
-    "downloads": 33
+    "downloads": 17
   },
   {
     "date": "1/16/25",
-    "downloads": 36
+    "downloads": 16
   },
   {
     "date": "1/17/25",
-    "downloads": 47
+    "downloads": 18
   },
   {
     "date": "1/18/25",
-    "downloads": 51
+    "downloads": 16
   },
   {
     "date": "1/19/25",
-    "downloads": 55
+    "downloads": 19
   },
   {
     "date": "1/20/25",
-    "downloads": 53
+    "downloads": 21
   },
   {
     "date": "1/21/25",
-    "downloads": 48
+    "downloads": 20
   },
   {
     "date": "1/22/25",
-    "downloads": 45
+    "downloads": 18
   },
   {
     "date": "1/23/25",
-    "downloads": 36
+    "downloads": 21
   },
   {
     "date": "1/24/25",
-    "downloads": 31
+    "downloads": 22
   },
   {
     "date": "1/25/25",
-    "downloads": 44
+    "downloads": 24
   },
   {
     "date": "1/26/25",
-    "downloads": 39
+    "downloads": 23
   },
   {
     "date": "1/27/25",
-    "downloads": 35
+    "downloads": 25
   },
   {
     "date": "1/28/25",
-    "downloads": 28
+    "downloads": 24
   },
   {
     "date": "1/29/25",
-    "downloads": 26
+    "downloads": 23
   },
   {
     "date": "1/30/25",
-    "downloads": 31
+    "downloads": 24
   },
   {
     "date": "1/31/25",
-    "downloads": 36
+    "downloads": 25
   },
   {
     "date": "2/1/25",
-    "downloads": 39
+    "downloads": 24
   },
   {
     "date": "2/2/25",
-    "downloads": 42
+    "downloads": 23
   },
   {
     "date": "2/3/25",
-    "downloads": 37
+    "downloads": 21
   },
   {
     "date": "2/4/25",
@@ -285,37 +285,39 @@ const dailyDownloads = [
   {
     "date": "3/5/25",
     "downloads": 28
-  },
-  {
-    "date": "3/6/25",
-    "downloads": 24
   }
 ];
 
-// Download sources data
+// Download sources data (from CSV analysis)
 const downloadSources = [
-  { name: 'Search', value: 65 },
-  { name: 'Browse', value: 15 },
-  { name: 'Referral', value: 10 },
-  { name: 'Web to App', value: 5 },
-  { name: 'Other', value: 5 }
+  { name: 'App Store Search', value: 2044 },
+  { name: 'App Referrer', value: 59 },
+  { name: 'Web Referrer', value: 55 },
+  { name: 'App Store Browse', value: 44 },
+  { name: 'Unavailable', value: 5 },
+  { name: 'Event Notification', value: 0 },
+  { name: 'Institutional Purchase', value: 0 }
 ];
 
-// Download by country data
+// Downloads by country data (top territories from CSV analysis)
 const downloadsByCountry = [
-  { country: 'United States', downloads: 1250 },
-  { country: 'United Kingdom', downloads: 520 },
-  { country: 'Canada', downloads: 350 },
-  { country: 'Australia', downloads: 170 },
-  { country: 'Germany', downloads: 85 },
-  { country: 'Other', downloads: 54 }
+  { country: 'Germany', downloads: 474 },
+  { country: 'Philippines', downloads: 253 },
+  { country: 'Japan', downloads: 224 },
+  { country: 'United States', downloads: 148 },
+  { country: 'Australia', downloads: 144 },
+  { country: 'Côte d\'Ivoire', downloads: 129 },
+  { country: 'United Kingdom', downloads: 117 },
+  { country: 'Norway', downloads: 116 },
+  { country: 'Austria', downloads: 82 },
+  { country: 'Benin', downloads: 77 }
 ];
 
 // Install and uninstall data - YTD 2025
 const retentionData = [
-  { month: 'Jan', installs: 1437, uninstalls: 143 },
-  { month: 'Feb', installs: 834, uninstalls: 92 },
-  { month: 'Mar', installs: 158, uninstalls: 14 },
+  { month: 'Jan', installs: 1437, uninstalls: 144 },
+  { month: 'Feb', installs: 684, uninstalls: 68 },
+  { month: 'Mar', installs: 86, uninstalls: 9 },
   { month: 'Apr', installs: 0, uninstalls: 0 },
   { month: 'May', installs: 0, uninstalls: 0 },
   { month: 'Jun', installs: 0, uninstalls: 0 },
@@ -455,7 +457,7 @@ export function DownloadsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Download Sources</CardTitle>
+            <CardTitle>Download Sources (YTD)</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -465,7 +467,7 @@ export function DownloadsTab() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, value, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -474,7 +476,7 @@ export function DownloadsTab() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value) => `${value} downloads`} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -483,7 +485,7 @@ export function DownloadsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Downloads by Country ({dateRange.territory})</CardTitle>
+            <CardTitle>Downloads by Top Territories</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -494,7 +496,7 @@ export function DownloadsTab() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" />
-                <YAxis type="category" dataKey="country" width={80} />
+                <YAxis type="category" dataKey="country" width={100} />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="downloads" name="Downloads" fill="#8884d8" />
