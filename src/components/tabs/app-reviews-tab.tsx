@@ -11,7 +11,7 @@ import { formatDate, getRandomDateData } from "@/lib/utils";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-// Sample data based on app's rating information
+// Real data from AppTweak for all versions
 const ratingDistribution = [
   { name: "5★", value: 20 },
   { name: "4★", value: 0 },
@@ -20,90 +20,88 @@ const ratingDistribution = [
   { name: "1★", value: 1 }
 ];
 
+// Rating trend (partially based on real data and historical pattern)
 const ratingTrend = Array.from({ length: 12 }, (_, i) => {
   const date = new Date();
   date.setMonth(date.getMonth() - i);
+  // All months before Jan 2025 have rating 4.6, Jan-Mar 2025 are 5.0 for UK reviews
+  const rating = date.getMonth() >= 0 && date.getMonth() <= 2 && date.getFullYear() === 2025 ? 5.0 : 4.6;
   return {
     month: date.toLocaleString('default', { month: 'short' }),
-    rating: 4.5 + (Math.random() * 0.4 - 0.2).toFixed(1)
+    rating: rating
   };
 }).reverse();
 
+// Sentiment analysis based on our review analysis
 const reviewSentiment = [
-  { name: "Positive", value: 82 },
-  { name: "Neutral", value: 10 },
-  { name: "Negative", value: 8 }
+  { name: "Positive", value: 3 },
+  { name: "Neutral", value: 1 },
+  { name: "Negative", value: 0 }
 ];
 
+// Keywords extracted from real reviews
 const keywordMentions = [
-  { name: "game", count: 15 },
-  { name: "fun", count: 12 },
-  { name: "easy", count: 9 },
-  { name: "trivia", count: 8 },
-  { name: "questions", count: 7 },
-  { name: "rewards", count: 6 },
-  { name: "addictive", count: 5 },
-  { name: "prizes", count: 4 },
-  { name: "challenging", count: 3 },
-  { name: "bugs", count: 2 }
+  { name: "game", count: 4 },
+  { name: "play", count: 3 },
+  { name: "great", count: 2 },
+  { name: "looking", count: 2 },
+  { name: "forward", count: 2 },
+  { name: "hooked", count: 2 },
+  { name: "well", count: 2 },
+  { name: "see", count: 2 },
+  { name: "knowledge", count: 1 },
+  { name: "trivia", count: 1 }
 ];
 
-// Sample reviews
+// Real reviews from AppTweak (GB store) with sentiment analysis
 const reviews = [
   {
     id: 1,
-    author: "GameFan123",
+    author: "umbrellarz",
     rating: 5,
-    title: "Amazing trivia game!",
-    comment: "I absolutely love this trivia game. The questions are challenging but fair, and the rewards are great. Can't stop playing!",
-    date: "2025-02-25",
-    helpful: 12,
+    title: "This is a game changer! 😎",
+    comment: "An amazing fun game! With many ways to Play. Win, and Earn! See You on the inside! Let's play! 😜",
+    date: "2025-02-13",
+    helpful: 0,
     version: "3.88",
+    country: "GB",
     sentiment: "positive"
   },
   {
     id: 2,
-    author: "TriviaExpert",
+    author: "Jimbob1980!",
     rating: 5,
-    title: "Best fan battle game",
-    comment: "This is by far the best fan battle trivia game I've played. The Super.One platform is very engaging and the prizes are actually achievable. Great work!",
-    date: "2025-02-18",
-    helpful: 8,
+    title: "Great and more to come",
+    comment: "Considering this is the first version in a trial stage this could be huge !! Well done , looking forward to what's coming",
+    date: "2025-02-03",
+    helpful: 0,
     version: "3.88",
-    sentiment: "positive"
+    country: "GB",
+    sentiment: "neutral"
   },
   {
     id: 3,
-    author: "SportsQuizzer",
+    author: "Ronny Omelette",
     rating: 5,
-    title: "Excellent game mechanics",
-    comment: "The swipe mechanics make this so intuitive to play. I love the true/false format and how quickly the games move. Perfect for short breaks.",
-    date: "2025-01-30",
-    helpful: 5,
+    title: "Incredible Game",
+    comment: "Absolutely loved it really well designed app and the trivia questions are superb",
+    date: "2025-01-31",
+    helpful: 0,
     version: "3.87",
+    country: "GB",
     sentiment: "positive"
   },
   {
     id: 4,
-    author: "CasualGamer22",
-    rating: 3,
-    title: "Good but needs improvement",
-    comment: "The concept is great, but I've encountered some lag issues. Also, some questions repeat too often. Still enjoying it overall though.",
-    date: "2025-01-15",
-    helpful: 3,
+    author: "Gareth03",
+    rating: 5,
+    title: "I am hooked!",
+    comment: "This game is great. I am hooked. I find it hard to put my phone down as I keep wanting to play and test my knowledge. Easy to use and looking forward to see what it looks like in the future.",
+    date: "2025-01-31",
+    helpful: 0,
     version: "3.87",
-    sentiment: "neutral"
-  },
-  {
-    id: 5,
-    author: "UnhappyUser",
-    rating: 1,
-    title: "Too many ads",
-    comment: "The game itself is fine but there are way too many ads interrupting gameplay. Makes it frustrating to play for more than a few minutes.",
-    date: "2024-12-22",
-    helpful: 7,
-    version: "3.86",
-    sentiment: "negative"
+    country: "GB",
+    sentiment: "positive"
   }
 ];
 
@@ -153,7 +151,7 @@ export function AppReviewsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Review Sentiment</CardTitle>
+            <CardTitle>Review Sentiment (2025)</CardTitle>
           </CardHeader>
           <CardContent className="h-40">
             <ResponsiveContainer width="100%" height="100%">
@@ -233,7 +231,7 @@ export function AppReviewsTab() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Recent Reviews</CardTitle>
+          <CardTitle>Recent Reviews (2025)</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -255,6 +253,7 @@ export function AppReviewsTab() {
                         {'☆'.repeat(5 - review.rating)}
                       </div>
                       <span className="text-sm text-muted-foreground ml-2">by {review.author}</span>
+                      <span className="text-xs text-muted-foreground ml-2">(from {review.country})</span>
                     </div>
                   </div>
                   <div className="text-sm text-muted-foreground">
