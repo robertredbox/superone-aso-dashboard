@@ -12,10 +12,10 @@ import { getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
 const dateRange = getYTDDateRange();
 
-// Updated data based on YTD downloads (Jan 1 - Mar 6, 2025)
+// Updated data based on YTD downloads (Jan 1 - Mar 5, 2025)
 // with corrected download numbers and competitor data
 const competitorData = [
-  { name: "SuperOne Fan Battle", id: "1455333818", rating: 4.6, downloads: 2429, visibility: 65, inAppPurchases: 12, retention: 38, engagementScore: 71, updates: 5 },
+  { name: "SuperOne Fan Battle", id: "1455333818", rating: 4.6, downloads: 2207, visibility: 65, inAppPurchases: 12, retention: 38, engagementScore: 71, updates: 5 },
   { name: "Sports Trivia Star", id: "6444810592", rating: 4.9, downloads: 4150, visibility: 82, inAppPurchases: 8, retention: 44, engagementScore: 83, updates: 7 },
   { name: "MADFUT 24", id: "6446899306", rating: 4.8, downloads: 7580, visibility: 91, inAppPurchases: 22, retention: 56, engagementScore: 88, updates: 9 },
   { name: "Basketball Highlights 2045", id: "1003138996", rating: 4.7, downloads: 1860, visibility: 58, inAppPurchases: 15, retention: 41, engagementScore: 68, updates: 4 },
@@ -67,7 +67,7 @@ export function CompetitiveAnalysisTab() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Competitive Landscape - {dateRange.territory}</CardTitle>
+          <CardTitle>Competitive Landscape - Global Analysis</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -174,7 +174,7 @@ export function CompetitiveAnalysisTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Category Ranking Trends - {dateRange.territory}</CardTitle>
+            <CardTitle>Category Ranking Trends - Global</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
