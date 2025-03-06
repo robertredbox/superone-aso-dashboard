@@ -199,6 +199,14 @@ const compareData = [
   { name: "Dec", organic: 68, paid: 32 },
 ];
 
+// Prepare data for the trend chart - ensure keywords exist
+const superOneKeyword = keywordData.find(k => k.keyword === "super one");
+const superFanKeyword = keywordData.find(k => k.keyword === "super fan");
+
+// Create safe data arrays for the chart
+const superOneHistory = superOneKeyword ? superOneKeyword.history : [];
+const superFanHistory = superFanKeyword ? superFanKeyword.history : [];
+
 export function KeywordPerformanceTab() {
   return (
     <div className="space-y-6">
@@ -344,22 +352,26 @@ export function KeywordPerformanceTab() {
                 <YAxis reversed domain={[1, 100]} />
                 <Tooltip />
                 <Legend />
-                <Line 
-                  data={keywordData.find(k => k.keyword === "super one").history}
-                  type="monotone" 
-                  dataKey="ranking" 
-                  name="super one" 
-                  stroke="#8884d8" 
-                  activeDot={{ r: 8 }} 
-                />
-                <Line 
-                  data={keywordData.find(k => k.keyword === "super fan").history}
-                  type="monotone" 
-                  dataKey="ranking" 
-                  name="super fan" 
-                  stroke="#82ca9d" 
-                  activeDot={{ r: 8 }} 
-                />
+                {superOneKeyword && (
+                  <Line 
+                    data={superOneHistory}
+                    type="monotone" 
+                    dataKey="ranking" 
+                    name="super one" 
+                    stroke="#8884d8" 
+                    activeDot={{ r: 8 }} 
+                  />
+                )}
+                {superFanKeyword && (
+                  <Line 
+                    data={superFanHistory}
+                    type="monotone" 
+                    dataKey="ranking" 
+                    name="super fan" 
+                    stroke="#82ca9d" 
+                    activeDot={{ r: 8 }} 
+                  />
+                )}
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
