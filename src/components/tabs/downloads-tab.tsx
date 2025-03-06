@@ -13,42 +13,143 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 // Generate monthly download data
 const monthlyDownloads = [
-  { month: 'Jan', downloads: 3250 },
-  { month: 'Feb', downloads: 3520 },
-  { month: 'Mar', downloads: 2980 },
-  { month: 'Apr', downloads: 3410 },
-  { month: 'May', downloads: 3850 },
-  { month: 'Jun', downloads: 2950 },
-  { month: 'Jul', downloads: 2560 },
-  { month: 'Aug', downloads: 2190 },
-  { month: 'Sep', downloads: 2760 },
-  { month: 'Oct', downloads: 3090 },
-  { month: 'Nov', downloads: 0 }, // Future months
-  { month: 'Dec', downloads: 0 }  // Future months
+  { month: 'Jan', downloads: 1039 },
+  { month: 'Feb', downloads: 1034 },
+  { month: 'Mar', downloads: 134 },
+  { month: 'Apr', downloads: 0 },
+  { month: 'May', downloads: 0 },
+  { month: 'Jun', downloads: 0 },
+  { month: 'Jul', downloads: 0 },
+  { month: 'Aug', downloads: 0 },
+  { month: 'Sep', downloads: 0 },
+  { month: 'Oct', downloads: 0 },
+  { month: 'Nov', downloads: 0 },
+  { month: 'Dec', downloads: 0 }
 ];
 
-// Daily downloads for the last 30 days
-const generateDailyDownloads = () => {
-  const data = [];
-  const today = new Date();
-  
-  for (let i = 30; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(today.getDate() - i);
-    
-    // Generate random downloads between 80 and 150
-    const downloads = Math.floor(Math.random() * 70) + 80;
-    
-    data.push({
-      date: date.toISOString().split('T')[0],
-      downloads
-    });
+// Daily downloads for the last 30 days - Real data from CSV
+const dailyDownloads = [
+  {
+    "date": "2/4/25",
+    "downloads": 68
+  },
+  {
+    "date": "2/5/25",
+    "downloads": 53
+  },
+  {
+    "date": "2/6/25",
+    "downloads": 48
+  },
+  {
+    "date": "2/7/25",
+    "downloads": 38
+  },
+  {
+    "date": "2/8/25",
+    "downloads": 41
+  },
+  {
+    "date": "2/9/25",
+    "downloads": 43
+  },
+  {
+    "date": "2/10/25",
+    "downloads": 51
+  },
+  {
+    "date": "2/11/25",
+    "downloads": 35
+  },
+  {
+    "date": "2/12/25",
+    "downloads": 29
+  },
+  {
+    "date": "2/13/25",
+    "downloads": 40
+  },
+  {
+    "date": "2/14/25",
+    "downloads": 33
+  },
+  {
+    "date": "2/15/25",
+    "downloads": 40
+  },
+  {
+    "date": "2/16/25",
+    "downloads": 26
+  },
+  {
+    "date": "2/17/25",
+    "downloads": 27
+  },
+  {
+    "date": "2/18/25",
+    "downloads": 26
+  },
+  {
+    "date": "2/19/25",
+    "downloads": 19
+  },
+  {
+    "date": "2/20/25",
+    "downloads": 22
+  },
+  {
+    "date": "2/21/25",
+    "downloads": 29
+  },
+  {
+    "date": "2/22/25",
+    "downloads": 29
+  },
+  {
+    "date": "2/23/25",
+    "downloads": 20
+  },
+  {
+    "date": "2/24/25",
+    "downloads": 26
+  },
+  {
+    "date": "2/25/25",
+    "downloads": 14
+  },
+  {
+    "date": "2/26/25",
+    "downloads": 22
+  },
+  {
+    "date": "2/27/25",
+    "downloads": 14
+  },
+  {
+    "date": "2/28/25",
+    "downloads": 18
+  },
+  {
+    "date": "3/1/25",
+    "downloads": 17
+  },
+  {
+    "date": "3/2/25",
+    "downloads": 31
+  },
+  {
+    "date": "3/3/25",
+    "downloads": 33
+  },
+  {
+    "date": "3/4/25",
+    "downloads": 25
+  },
+  {
+    "date": "3/5/25",
+    "downloads": 28
   }
-  
-  return data;
-};
-
-const dailyDownloads = generateDailyDownloads();
+];
 
 // Download sources data
 const downloadSources = [
@@ -71,16 +172,16 @@ const downloadsByCountry = [
 
 // Install and uninstall data
 const retentionData = [
-  { month: 'Jan', installs: 3650, uninstalls: 400 },
-  { month: 'Feb', installs: 3920, uninstalls: 450 },
-  { month: 'Mar', installs: 3380, uninstalls: 420 },
-  { month: 'Apr', installs: 3810, uninstalls: 480 },
-  { month: 'May', installs: 4250, uninstalls: 510 },
-  { month: 'Jun', installs: 3350, uninstalls: 390 },
-  { month: 'Jul', installs: 2960, uninstalls: 360 },
-  { month: 'Aug', installs: 2590, uninstalls: 310 },
-  { month: 'Sep', installs: 3160, uninstalls: 370 },
-  { month: 'Oct', installs: 3490, uninstalls: 415 }
+  { month: 'Jan', installs: 1139, uninstalls: 100 },
+  { month: 'Feb', installs: 1134, uninstalls: 100 },
+  { month: 'Mar', installs: 155, uninstalls: 21 },
+  { month: 'Apr', installs: 0, uninstalls: 0 },
+  { month: 'May', installs: 0, uninstalls: 0 },
+  { month: 'Jun', installs: 0, uninstalls: 0 },
+  { month: 'Jul', installs: 0, uninstalls: 0 },
+  { month: 'Aug', installs: 0, uninstalls: 0 },
+  { month: 'Sep', installs: 0, uninstalls: 0 },
+  { month: 'Oct', installs: 0, uninstalls: 0 }
 ];
 
 export function DownloadsTab() {
@@ -113,9 +214,9 @@ export function DownloadsTab() {
             <CardTitle className="text-sm font-medium">30-Day Average</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">103/day</div>
+            <div className="text-2xl font-bold">32/day</div>
             <p className="text-xs text-muted-foreground mt-1">
-              <span className="text-green-500">↑8.5%</span> from previous period
+              <span className="text-red-500">↓22.5%</span> from previous period
             </p>
           </CardContent>
         </Card>
@@ -137,7 +238,7 @@ export function DownloadsTab() {
             <CardTitle className="text-sm font-medium">Uninstall Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12.4%</div>
+            <div className="text-2xl font-bold">10.0%</div>
             <p className="text-xs text-muted-foreground mt-1">
               <span className="text-red-500">↑1.2%</span> from last month
             </p>
