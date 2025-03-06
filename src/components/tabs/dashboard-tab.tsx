@@ -10,6 +10,130 @@ import { formatNumber, formatPercentage, getRandomDateData } from "@/lib/utils";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
+// Real data from the CSV file
+const realDownloads = [
+  {
+    "date": "2/4/25",
+    "value": 68
+  },
+  {
+    "date": "2/5/25",
+    "value": 53
+  },
+  {
+    "date": "2/6/25",
+    "value": 48
+  },
+  {
+    "date": "2/7/25",
+    "value": 38
+  },
+  {
+    "date": "2/8/25",
+    "value": 41
+  },
+  {
+    "date": "2/9/25",
+    "value": 43
+  },
+  {
+    "date": "2/10/25",
+    "value": 51
+  },
+  {
+    "date": "2/11/25",
+    "value": 35
+  },
+  {
+    "date": "2/12/25",
+    "value": 29
+  },
+  {
+    "date": "2/13/25",
+    "value": 40
+  },
+  {
+    "date": "2/14/25",
+    "value": 33
+  },
+  {
+    "date": "2/15/25",
+    "value": 40
+  },
+  {
+    "date": "2/16/25",
+    "value": 26
+  },
+  {
+    "date": "2/17/25",
+    "value": 27
+  },
+  {
+    "date": "2/18/25",
+    "value": 26
+  },
+  {
+    "date": "2/19/25",
+    "value": 19
+  },
+  {
+    "date": "2/20/25",
+    "value": 22
+  },
+  {
+    "date": "2/21/25",
+    "value": 29
+  },
+  {
+    "date": "2/22/25",
+    "value": 29
+  },
+  {
+    "date": "2/23/25",
+    "value": 20
+  },
+  {
+    "date": "2/24/25",
+    "value": 26
+  },
+  {
+    "date": "2/25/25",
+    "value": 14
+  },
+  {
+    "date": "2/26/25",
+    "value": 22
+  },
+  {
+    "date": "2/27/25",
+    "value": 14
+  },
+  {
+    "date": "2/28/25",
+    "value": 18
+  },
+  {
+    "date": "3/1/25",
+    "value": 17
+  },
+  {
+    "date": "3/2/25",
+    "value": 31
+  },
+  {
+    "date": "3/3/25",
+    "value": 33
+  },
+  {
+    "date": "3/4/25",
+    "value": 25
+  },
+  {
+    "date": "3/5/25",
+    "value": 28
+  }
+];
+
 const appData = {
   name: "Super.One Fan Battle",
   appId: 1455333818,
@@ -27,7 +151,7 @@ const appData = {
     { name: "Basketball Highlights 2045", id: "1003138996", rating: 4.7 },
     { name: "Astonishing Basketball Manager", id: "1589313811", rating: 4.7 }
   ],
-  downloads: getRandomDateData(30),
+  downloads: realDownloads, // Use real data
   categoryRanking: getRandomDateData(30).map(item => ({ ...item, value: Math.floor(Math.random() * 100) + 1 })),
   conversionRate: getRandomDateData(30).map(item => ({ ...item, value: (Math.random() * 5) + 1 })),
   reviews: [
@@ -95,7 +219,7 @@ export function DashboardTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Downloads (YTD)</CardTitle>
+            <CardTitle>Downloads (Last 30 Days)</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -105,7 +229,7 @@ export function DashboardTab() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis domain={[0, 'dataMax + 10']} />
                 <Tooltip />
                 <Legend />
                 <Line 
