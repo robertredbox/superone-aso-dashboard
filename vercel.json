@@ -9,9 +9,5 @@
       "src": "package.json",
       "use": "@vercel/next"
     }
-  ],
-  "env": {
-    "APPTWEAK_API_KEY": "@apptweak_api_key",
-    "APP_STORE_CONNECT_API_KEY": "@app_store_connect_api_key"
-  }
+  ]
 }
