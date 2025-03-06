@@ -9,28 +9,15 @@ import {
   ReferenceLine
 } from "recharts";
 import { formatNumber, formatPercentage, getRandomDateData, getYTDDateRange } from "@/lib/utils";
-import { ErrorBoundary } from "react-error-boundary";
 
-// Add Google Fonts for Roboto and Roboto Slab (per user requirements)
-const FontImport = () => (
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Roboto+Slab:wght@500&display=swap" rel="stylesheet" />
-);
-
-// Error fallback component
-const ErrorFallback = ({ error, resetErrorBoundary }) => {
+// Custom error fallback component (no dependency required)
+const ErrorDisplay = ({ message }) => {
   return (
     <div className="p-4 bg-red-50 border border-red-200 rounded-md" role="alert">
       <h2 style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-lg text-red-800 mb-2">Data Error</h2>
       <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-sm text-red-600">
-        There was an error loading the dashboard data. Please try refreshing the page.
+        {message || "There was an error loading the dashboard data. Please try refreshing the page."}
       </p>
-      <button 
-        onClick={resetErrorBoundary}
-        className="mt-2 px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200"
-        style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}
-      >
-        Try again
-      </button>
     </div>
   );
 };
@@ -423,15 +410,6 @@ const appData = {
   ]
 };
 
-// Validate app data
-try {
-  validateAppTweakData(appData.rating, 'rating');
-  validateAppTweakData(appData.downloads, 'downloads');
-} catch (error) {
-  console.error("Data validation error:", error);
-  // Allow component to render, error boundary will catch if needed
-}
-
 export function DashboardTab() {
   const [isLoading, setIsLoading] = useState(false);
   const [dataError, setDataError] = useState(null);
@@ -457,6 +435,17 @@ export function DashboardTab() {
     }
   }, []);
 
+  // Validate app data
+  useEffect(() => {
+    try {
+      validateAppTweakData(appData.rating, 'rating');
+      validateAppTweakData(appData.downloads, 'downloads');
+    } catch (error) {
+      console.error("Data validation error:", error);
+      setDataError(error);
+    }
+  }, []);
+
   if (isLoading) {
     return (
       <div className="space-y-6 p-4 flex justify-center items-center h-64">
@@ -466,262 +455,253 @@ export function DashboardTab() {
   }
 
   if (dataError) {
-    return (
-      <div className="space-y-6 p-4">
-        <div className="bg-red-50 p-4 rounded-md border border-red-200">
-          <h3 style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-red-800">Data Error</h3>
-          <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-red-600">{dataError.message}</p>
-        </div>
-      </div>
-    );
+    return <ErrorDisplay message={dataError.message} />;
   }
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Current Rating</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{appData.rating} ★</div>
-              <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
-                Based on 23 ratings
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">YTD Downloads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatNumber(totalYtdDownloads)}</div>
-              <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
-                -91.3% from last year
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Category Position</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">Unranked</div>
-              <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
-                Not currently ranked in categories
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Conversion Rate</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatPercentage(3.2)}</div>
-              <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
-                +0.5% from last month
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Current Rating</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{appData.rating} ★</div>
+            <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
+              Based on 23 ratings
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">YTD Downloads</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatNumber(totalYtdDownloads)}</div>
+            <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
+              -91.3% from last year
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Category Position</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">Unranked</div>
+            <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
+              Not currently ranked in categories
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Conversion Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatPercentage(3.2)}</div>
+            <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
+              +0.5% from last month
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
-                Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={appData.downloads}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="formattedDate" 
-                    tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                    interval="preserveStartEnd"
-                    tickCount={6}
-                  />
-                  <YAxis 
-                    domain={yAxisDomain}
-                    tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend 
-                    wrapperStyle={{ 
-                      fontFamily: 'Roboto, sans-serif',
-                      fontSize: '12px',
-                      paddingTop: '10px'
-                    }} 
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    name="Daily Downloads"
-                    stroke="#0088FE" 
-                    strokeWidth={2}
-                    activeDot={{ r: 6 }} 
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="average" 
-                    name="7-Day Average"
-                    stroke="#FF8042" 
-                    strokeWidth={2}
-                    dot={false}
-                    connectNulls={true}
-                  />
-                  <ReferenceLine y={0} stroke="#CCC" />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Top Keywords</CardTitle>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={appData.topKeywords}
-                  layout="vertical"
-                  margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category"
-                    tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="volume" name="Search Volume" fill="#00C49F" barSize={20} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Competitor Ratings</CardTitle>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={appData.competitors}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 50 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="name"
-                    tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                    interval={0}
-                    angle={-45}
-                    textAnchor="end"
-                  />
-                  <YAxis 
-                    domain={[0, 5]}
-                    tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  />
-                  <Tooltip />
-                  <Bar dataKey="rating" fill="#8884d8" name="Rating">
-                    {appData.competitors.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Review Distribution</CardTitle>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={appData.reviews}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="count"
-                    nameKey="star"
-                    label={({ name, percent }) => `${name}★: ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {appData.reviews.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value, name) => [`${value} reviews`, `${name} stars`]}
-                    contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
-                  />
-                  <Legend 
-                    formatter={(value) => `${value} Stars`}
-                    wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Additional section for conversion rate trend */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Conversion Rate Trend</CardTitle>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})
+            </CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={appData.conversionRate}
+                data={appData.downloads}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
-                  dataKey="date" 
+                  dataKey="formattedDate" 
                   tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                  interval="preserveStartEnd"
+                  tickCount={6}
                 />
                 <YAxis 
+                  domain={yAxisDomain}
                   tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  tickFormatter={(value) => `${value}%`}
                 />
-                <Tooltip 
-                  formatter={(value) => [`${value.toFixed(2)}%`, 'Conversion Rate']}
-                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  wrapperStyle={{ 
+                    fontFamily: 'Roboto, sans-serif',
+                    fontSize: '12px',
+                    paddingTop: '10px'
+                  }} 
                 />
                 <Line 
                   type="monotone" 
                   dataKey="value" 
-                  name="Conversion Rate"
-                  stroke="#8884d8" 
+                  name="Daily Downloads"
+                  stroke="#0088FE" 
+                  strokeWidth={2}
                   activeDot={{ r: 6 }} 
                 />
-                <ReferenceLine y={3.0} stroke="#FF8042" strokeDasharray="3 3" label={{ 
-                  value: "Target (3%)", 
-                  position: "insideBottomRight",
-                  style: { fontFamily: 'Roboto, sans-serif', fontSize: '12px' }
-                }} />
+                <Line 
+                  type="monotone" 
+                  dataKey="average" 
+                  name="7-Day Average"
+                  stroke="#FF8042" 
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls={true}
+                />
+                <ReferenceLine y={0} stroke="#CCC" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Top Keywords</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={appData.topKeywords}
+                layout="vertical"
+                margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis 
+                  dataKey="name" 
+                  type="category"
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="volume" name="Search Volume" fill="#00C49F" barSize={20} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
       </div>
-    </ErrorBoundary>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Competitor Ratings</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={appData.competitors}
+                margin={{ top: 5, right: 30, left: 20, bottom: 50 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="name"
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                  interval={0}
+                  angle={-45}
+                  textAnchor="end"
+                />
+                <YAxis 
+                  domain={[0, 5]}
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip />
+                <Bar dataKey="rating" fill="#8884d8" name="Rating">
+                  {appData.competitors.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Review Distribution</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={appData.reviews}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="count"
+                  nameKey="star"
+                  label={({ name, percent }) => `${name}★: ${(percent * 100).toFixed(0)}%`}
+                >
+                  {appData.reviews.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value, name) => [`${value} reviews`, `${name} stars`]}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  formatter={(value) => `${value} Stars`}
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional section for conversion rate trend */}
+      <Card>
+        <CardHeader>
+          <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>Conversion Rate Trend</CardTitle>
+        </CardHeader>
+        <CardContent className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={appData.conversionRate}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="date" 
+                tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+              />
+              <YAxis 
+                tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                tickFormatter={(value) => `${value}%`}
+              />
+              <Tooltip 
+                formatter={(value) => [`${value.toFixed(2)}%`, 'Conversion Rate']}
+                contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                name="Conversion Rate"
+                stroke="#8884d8" 
+                activeDot={{ r: 6 }} 
+              />
+              <ReferenceLine y={3.0} stroke="#FF8042" strokeDasharray="3 3" label={{ 
+                value: "Target (3%)", 
+                position: "insideBottomRight",
+                style: { fontFamily: 'Roboto, sans-serif', fontSize: '12px' }
+              }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
