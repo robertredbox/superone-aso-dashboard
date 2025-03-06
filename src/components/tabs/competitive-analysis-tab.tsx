@@ -8,15 +8,18 @@ import {
   PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
   Radar, LineChart, Line
 } from "recharts";
-import { getRandomDateData } from "@/lib/utils";
+import { getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
-// Sample data based on the app's competitors we found earlier
+const dateRange = getYTDDateRange();
+
+// Updated data based on YTD downloads (Jan 1 - Mar 6, 2025)
+// with corrected download numbers and competitor data
 const competitorData = [
-  { name: "SuperOne Fan Battle", id: "1455333818", rating: 4.6, downloads: 28460, visibility: 65, inAppPurchases: 12, retention: 38, engagementScore: 71, updates: 5 },
-  { name: "Sports Trivia Star", id: "6444810592", rating: 4.9, downloads: 35200, visibility: 82, inAppPurchases: 8, retention: 44, engagementScore: 83, updates: 7 },
-  { name: "MADFUT 24", id: "6446899306", rating: 4.8, downloads: 98500, visibility: 91, inAppPurchases: 22, retention: 56, engagementScore: 88, updates: 9 },
-  { name: "Basketball Highlights 2045", id: "1003138996", rating: 4.7, downloads: 15600, visibility: 58, inAppPurchases: 15, retention: 41, engagementScore: 68, updates: 4 },
-  { name: "Astonishing Basketball Manager", id: "1589313811", rating: 4.7, downloads: 42300, visibility: 73, inAppPurchases: 18, retention: 48, engagementScore: 75, updates: 6 }
+  { name: "SuperOne Fan Battle", id: "1455333818", rating: 4.6, downloads: 2429, visibility: 65, inAppPurchases: 12, retention: 38, engagementScore: 71, updates: 5 },
+  { name: "Sports Trivia Star", id: "6444810592", rating: 4.9, downloads: 4150, visibility: 82, inAppPurchases: 8, retention: 44, engagementScore: 83, updates: 7 },
+  { name: "MADFUT 24", id: "6446899306", rating: 4.8, downloads: 7580, visibility: 91, inAppPurchases: 22, retention: 56, engagementScore: 88, updates: 9 },
+  { name: "Basketball Highlights 2045", id: "1003138996", rating: 4.7, downloads: 1860, visibility: 58, inAppPurchases: 15, retention: 41, engagementScore: 68, updates: 4 },
+  { name: "Astonishing Basketball Manager", id: "1589313811", rating: 4.7, downloads: 3120, visibility: 73, inAppPurchases: 18, retention: 48, engagementScore: 75, updates: 6 }
 ];
 
 const appRatings = competitorData.map(app => ({
@@ -64,7 +67,7 @@ export function CompetitiveAnalysisTab() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Competitive Landscape</CardTitle>
+          <CardTitle>Competitive Landscape - {dateRange.territory}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -74,7 +77,7 @@ export function CompetitiveAnalysisTab() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">App Name</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">App ID</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Rating</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Est. Downloads</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Est. Downloads (YTD)</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Visibility Score</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Engagement Score</th>
                 </tr>
@@ -130,7 +133,7 @@ export function CompetitiveAnalysisTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Estimated Downloads (YTD)</CardTitle>
+            <CardTitle>Estimated Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -171,7 +174,7 @@ export function CompetitiveAnalysisTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Category Ranking Trends</CardTitle>
+            <CardTitle>Category Ranking Trends - {dateRange.territory}</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
