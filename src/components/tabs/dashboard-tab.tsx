@@ -10,8 +10,12 @@ import {
 } from "recharts";
 import { formatNumber, formatPercentage, getRandomDateData, getYTDDateRange } from "@/lib/utils";
 
-// Custom error fallback component (no dependency required)
-const ErrorDisplay = ({ message }) => {
+// Custom error fallback component with proper type
+interface ErrorDisplayProps {
+  message?: string;
+}
+
+const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message }) => {
   return (
     <div className="p-4 bg-red-50 border border-red-200 rounded-md" role="alert">
       <h2 style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-lg text-red-800 mb-2">Data Error</h2>
@@ -25,8 +29,57 @@ const ErrorDisplay = ({ message }) => {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 const dateRange = getYTDDateRange();
 
+// Define types for our data
+interface DownloadDataPoint {
+  date: string;
+  value: number;
+  average?: number | null;
+  formattedDate?: string;
+}
+
+interface ConversionDataPoint {
+  date: string;
+  value: number;
+}
+
+interface Keyword {
+  name: string;
+  rank: number;
+  volume: number;
+}
+
+interface Competitor {
+  name: string;
+  id: string;
+  rating: number;
+}
+
+interface Review {
+  star: number;
+  count: number;
+}
+
+interface AppData {
+  name: string;
+  appId: number;
+  rating: number;
+  currentVersion: string;
+  topKeywords: Keyword[];
+  competitors: Competitor[];
+  downloads: DownloadDataPoint[];
+  conversionRate: ConversionDataPoint[];
+  reviews: Review[];
+}
+
+// Custom tooltip component with proper type
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
 // Data validation function for AppTweak data
-const validateAppTweakData = (data, dataType) => {
+const validateAppTweakData = (data: any, dataType: string): boolean => {
   if (!data) {
     throw new Error(`Missing ${dataType} data`);
   }
@@ -56,7 +109,7 @@ const validateAppTweakData = (data, dataType) => {
 };
 
 // Calculate 7-day moving average
-const calculate7DayAverage = (data) => {
+const calculate7DayAverage = (data: DownloadDataPoint[]): DownloadDataPoint[] => {
   return data.map((item, index, array) => {
     if (index < 3) return { ...item, average: null }; // Not enough prior data
     
@@ -75,7 +128,7 @@ const calculate7DayAverage = (data) => {
 };
 
 // Format date consistently
-const formatDate = (dateStr) => {
+const formatDate = (dateStr: string): string => {
   try {
     const [month, day, year] = dateStr.split('/');
     return `${month}/${day}`;
@@ -86,7 +139,7 @@ const formatDate = (dateStr) => {
 };
 
 // Real data from the CSV file - YTD Jan 1st to March 6th, 2025
-const realDownloads = [
+const realDownloads: DownloadDataPoint[] = [
   {
     "date": "1/1/25",
     "value": 58
@@ -363,7 +416,7 @@ const maxDownloadValue = Math.max(...realDownloads.map(item => item.value));
 const yAxisDomain = [0, Math.ceil(maxDownloadValue * 1.1)]; // Add 10% padding
 
 // Custom tooltip component with proper font styling
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-sm rounded-md">
@@ -382,7 +435,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const appData = {
+const appData: AppData = {
   name: "Super.One Fan Battle",
   appId: 1455333818,
   rating: 4.6,
@@ -411,8 +464,8 @@ const appData = {
 };
 
 export function DashboardTab() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [dataError, setDataError] = useState(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [dataError, setDataError] = useState<Error | null>(null);
 
   // Simulate data loading
   useEffect(() => {
@@ -442,7 +495,7 @@ export function DashboardTab() {
       validateAppTweakData(appData.downloads, 'downloads');
     } catch (error) {
       console.error("Data validation error:", error);
-      setDataError(error);
+      setDataError(error as Error);
     }
   }, []);
 
