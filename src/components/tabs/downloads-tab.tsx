@@ -372,3 +372,93 @@ export function DownloadsTab() {
           </CardContent>
         </Card>
       </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Monthly Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={monthlyDownloads}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip 
+                  formatter={(value) => [`${value} downloads`, 'Monthly Total']}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+                <Bar dataKey="downloads" name="Downloads" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Daily Downloads with 7-Day Average
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={dailyDownloadsWithAverage.slice(-30)}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="formattedDate" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                  interval="preserveStartEnd"
+                  tickCount={6}
+                />
+                <YAxis 
+                  domain={[0, 'dataMax + 20']}
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip 
+                  formatter={(value, name) => [
+                    `${value} ${name === 'downloads' ? 'downloads' : ''}`,
+                    name === 'downloads' ? 'Daily Downloads' : '7-Day Average'
+                  ]}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="downloads" 
+                  name="Daily Downloads"
+                  stroke="#0088FE" 
+                  strokeWidth={2}
+                  activeDot={{ r: 8 }} 
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="average" 
+                  name="7-Day Average"
+                  stroke="#FF8042" 
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls={true}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
