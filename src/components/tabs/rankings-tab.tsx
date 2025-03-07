@@ -7,86 +7,33 @@ import {
   Legend, ResponsiveContainer, AreaChart, Area
 } from "recharts";
 import { getRandomDateData } from "@/lib/utils";
+import { AlertCircle } from "lucide-react";
 
-// Sample historical data
-const historicalRankingData = [
-  {
-    date: "2023-07-01",
-    overallRank: 64,
-    gamesRank: 53,
-    triviaRank: 22,
-    sportsRank: 41
-  },
-  {
-    date: "2023-08-01",
-    overallRank: 58,
-    gamesRank: 48,
-    triviaRank: 19,
-    sportsRank: 37
-  },
-  {
-    date: "2023-09-01",
-    overallRank: 52,
-    gamesRank: 42,
-    triviaRank: 15,
-    sportsRank: 33
-  },
-  {
-    date: "2023-10-01",
-    overallRank: 48,
-    gamesRank: 39,
-    triviaRank: 13,
-    sportsRank: 31
-  },
-  {
-    date: "2023-11-01",
-    overallRank: 45,
-    gamesRank: 37,
-    triviaRank: 12,
-    sportsRank: 29
-  },
-  {
-    date: "2023-12-01",
-    overallRank: 43,
-    gamesRank: 35,
-    triviaRank: 12,
-    sportsRank: 28
-  },
-  {
-    date: "2024-01-01",
-    overallRank: 42,
-    gamesRank: 35,
-    triviaRank: 12,
-    sportsRank: 28
-  },
-  {
-    date: "2024-02-01",
-    overallRank: 0,
-    gamesRank: 0,
-    triviaRank: 0,
-    sportsRank: 0
-  },
-  {
-    date: "2024-03-01",
-    overallRank: 0,
-    gamesRank: 0,
-    triviaRank: 0,
-    sportsRank: 0
-  }
+// Sample date range for when app could have ranked
+const historicalDateRange = [
+  { date: "2023-07-01" },
+  { date: "2023-08-01" },
+  { date: "2023-09-01" },
+  { date: "2023-10-01" },
+  { date: "2023-11-01" },
+  { date: "2023-12-01" },
+  { date: "2024-01-01" },
+  { date: "2024-02-01" },
+  { date: "2024-03-01" }
 ];
 
-// Sample historical country rankings
-const countryHistoricalRankings = [
-  { country: "United States", lastRanked: "January 2024", lastRank: 42 },
-  { country: "United Kingdom", lastRanked: "January 2024", lastRank: 38 },
-  { country: "Canada", lastRanked: "January 2024", lastRank: 45 },
-  { country: "Australia", lastRanked: "January 2024", lastRank: 33 },
-  { country: "Germany", lastRanked: "January 2024", lastRank: 51 },
-  { country: "France", lastRanked: "January 2024", lastRank: 47 },
-  { country: "Spain", lastRanked: "January 2024", lastRank: 36 },
-  { country: "Italy", lastRanked: "January 2024", lastRank: 49 },
-  { country: "Brazil", lastRanked: "January 2024", lastRank: 44 },
-  { country: "Mexico", lastRanked: "January 2024", lastRank: 39 }
+// List of countries where app is available
+const countriesAvailable = [
+  { country: "United States" },
+  { country: "United Kingdom" },
+  { country: "Canada" },
+  { country: "Australia" },
+  { country: "Germany" },
+  { country: "France" },
+  { country: "Spain" },
+  { country: "Italy" },
+  { country: "Brazil" },
+  { country: "Mexico" }
 ];
 
 export function RankingsTab() {
@@ -95,48 +42,64 @@ export function RankingsTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Overall App Ranking</CardTitle>
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Overall App Ranking
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Unranked</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Not currently in rankings
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              Unranked
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              App has never ranked in charts
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Games Category</CardTitle>
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Games Category
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Unranked</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Not currently in rankings
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              Unranked
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              App has never ranked in this category
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Trivia Category</CardTitle>
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Trivia Category
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Unranked</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Not currently in rankings
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              Unranked
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              App has never ranked in this category
             </p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Sports Category</CardTitle>
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Sports Category
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Unranked</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Not currently in rankings
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              Unranked
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              App has never ranked in this category
             </p>
           </CardContent>
         </Card>
@@ -145,26 +108,29 @@ export function RankingsTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Historical Ranking Trend</CardTitle>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Historical Ranking Trend
+            </CardTitle>
           </CardHeader>
-          <CardContent className="h-80">
+          <CardContent className="h-80 relative">
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6 bg-opacity-80 bg-background">
+              <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-center" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+                No Historical Ranking Data
+              </h3>
+              <p className="text-sm text-muted-foreground text-center" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                SuperOne has not ranked in the App Store charts since launch. 
+                This chart will populate once the app achieves ranking positions.
+              </p>
+            </div>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={historicalRankingData}
+                data={historicalDateRange}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis reversed domain={[0, 100]} />
-                <Tooltip />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="overallRank" 
-                  name="Overall Rank"
-                  stroke="#8884d8" 
-                  activeDot={{ r: 8 }} 
-                />
+                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                <XAxis dataKey="date" opacity={0.3} />
+                <YAxis reversed domain={[0, 100]} opacity={0.3} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -172,38 +138,29 @@ export function RankingsTab() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Category Historical Rankings</CardTitle>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Category Historical Rankings
+            </CardTitle>
           </CardHeader>
-          <CardContent className="h-80">
+          <CardContent className="h-80 relative">
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6 bg-opacity-80 bg-background">
+              <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-center" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+                No Category Ranking Data
+              </h3>
+              <p className="text-sm text-muted-foreground text-center" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                SuperOne has not ranked in any App Store category charts.
+                This chart will show comparative category performance once rankings are achieved.
+              </p>
+            </div>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={historicalRankingData}
+                data={historicalDateRange}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis reversed domain={[0, 100]} />
-                <Tooltip />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="triviaRank" 
-                  name="Trivia Rank"
-                  stroke="#8884d8" 
-                  activeDot={{ r: 8 }} 
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="gamesRank" 
-                  name="Games Rank"
-                  stroke="#82ca9d" 
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="sportsRank" 
-                  name="Sports Rank"
-                  stroke="#ffc658" 
-                />
+                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                <XAxis dataKey="date" opacity={0.3} />
+                <YAxis reversed domain={[0, 100]} opacity={0.3} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -212,9 +169,11 @@ export function RankingsTab() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Most Recent Country Rankings Data</CardTitle>
-          <p className="text-sm text-muted-foreground mt-1">
-            Note: App is currently unranked in all countries. Below shows last known rankings.
+          <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+            Country Rankings Status
+          </CardTitle>
+          <p className="text-sm text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+            SuperOne has not achieved rankings in any country markets.
           </p>
         </CardHeader>
         <CardContent>
@@ -222,21 +181,53 @@ export function RankingsTab() {
             <table className="min-w-full divide-y divide-border">
               <thead>
                 <tr className="bg-muted/50">
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Country</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Ranked</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Known Rank</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                    Country
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                    Ranking Status
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-card divide-y divide-border">
-                {countryHistoricalRankings.map((country, index) => (
+                {countriesAvailable.map((country, index) => (
                   <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">{country.country}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">{country.lastRanked}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">#{country.lastRank}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                      {country.country}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+                      Has never ranked
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+            App Store Ranking Requirements
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+            <p>
+              For an app to appear in the App Store charts, it typically needs to meet certain thresholds of:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Download volume relative to other apps in the category</li>
+              <li>Engagement metrics and retention</li>
+              <li>Rating count and average score</li>
+              <li>Recent download velocity and trends</li>
+            </ul>
+            <p>
+              The SuperOne ASO Dashboard will automatically track and display rankings once the app achieves chart positions.
+              Consider implementing ASO strategies focused on keyword optimization, ratings/reviews campaigns, and user acquisition to
+              improve ranking potential.
+            </p>
           </div>
         </CardContent>
       </Card>
