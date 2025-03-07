@@ -523,7 +523,7 @@ export function DownloadsTab() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  formatter={(value, name) => [`${formatNumber(value)} downloads (${downloadSources.find(s => s.name === name)?.percent}%)`, name]}
+                  formatter={(value, name) => [`${formatNumber(typeof value === 'number' ? value : 0)} downloads (${downloadSources.find(s => s.name === name)?.percent}%)`, name]}
                   contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
                 />
                 <Legend 
