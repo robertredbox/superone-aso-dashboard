@@ -262,3 +262,41 @@ const calculate7DayAverage = (data) => {
 };
 
 const dailyDownloadsWithAverage = calculate7DayAverage(dailyDownloads);
+
+export function DownloadsTab() {
+  // Calculate total YTD downloads
+  const totalDownloads = dailyDownloads.reduce((sum, day) => sum + day.downloads, 0);
+  
+  // Calculate last year's total (example - in real app would come from historical data)
+  const lastYearDownloads = 25430; 
+  const yoyGrowth = ((totalDownloads - lastYearDownloads) / lastYearDownloads) * 100;
+
+  // Calculate 30-day average (last 30 days)
+  const last30DaysData = dailyDownloads.slice(-30);
+  const last30DaysAvg = last30DaysData.reduce((sum, day) => sum + day.downloads, 0) / last30DaysData.length;
+  
+  // Calculate previous 30-days average for comparison
+  const previous30DaysData = dailyDownloads.slice(-60, -30);
+  const previous30DaysAvg = previous30DaysData.length > 0 
+    ? previous30DaysData.reduce((sum, day) => sum + day.downloads, 0) / previous30DaysData.length 
+    : 0;
+  
+  // Calculate percentage change
+  const avgPercentChange = previous30DaysAvg > 0 
+    ? ((last30DaysAvg - previous30DaysAvg) / previous30DaysAvg) * 100 
+    : 0;
+
+  // Calculate total installs and uninstalls
+  const totalInstalls = totalDownloads;
+  const totalUninstalls = Math.round(totalDownloads * 0.10); // Assuming 10% uninstall rate
+  const retentionRate = Math.round((totalInstalls - totalUninstalls) / totalInstalls * 100);
+
+  // Calculate peak download day
+  const peakDownloadDay = [...dailyDownloads].sort((a, b) => b.downloads - a.downloads)[0];
+
+  // Calculate weighted average CPI
+  const totalPaidCost = acquisitionCostData.reduce((sum, item) => sum + item.cost, 0);
+  const totalPaidInstalls = acquisitionCostData
+    .filter(item => item.source !== 'Organic')
+    .reduce((sum, item) => sum + item.installs, 0);
+  const avgCpi = totalPaidInstalls > 0 ? (totalPaidCost / totalPaidInstalls).toFixed(2) : 0;
