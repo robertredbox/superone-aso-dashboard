@@ -10,42 +10,52 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --primary: 268 61% 16%; /* Redbox Mobile Deep Indigo #261041 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 275 100% 50%; /* Redbox Mobile Purple #8400ff */
+    --secondary-foreground: 0 0% 100%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 8 100% 50%; /* Redbox Mobile Red/Orange #ff2f00 */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 346.8 77.2% 49.8%;
+    --border: 268 30% 80%;
+    --input: 268 30% 80%;
+    --ring: 268 61% 16%;
     --radius: 0.5rem;
+    
+    /* Status colors */
+    --status-good: 120 100% 30%; /* Green for good stats */
+    --status-average: 30 100% 50%; /* Orange for average stats */
+    --status-bad: 0 100% 50%; /* Red for bad stats */
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 268 61% 10%; /* Dark Deep Indigo background */
     --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
+    --card: 268 50% 15%; /* Slightly lighter indigo for cards */
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
+    --popover: 268 50% 15%;
     --popover-foreground: 0 0% 95%;
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
+    --primary: 268 61% 16%; /* Redbox Mobile Deep Indigo #261041 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 275 100% 50%; /* Redbox Mobile Purple #8400ff */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 268 40% 25%;
+    --muted-foreground: 240 5% 84.9%;
+    --accent: 8 100% 50%; /* Redbox Mobile Red/Orange #ff2f00 */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 346.8 77.2% 49.8%;
+    --border: 268 50% 25%;
+    --input: 268 50% 25%;
+    --ring: 275 100% 60%;
+    
+    /* Status colors - darkened for dark mode */
+    --status-good: 120 80% 25%; /* Green for good stats */
+    --status-average: 30 90% 45%; /* Orange for average stats */
+    --status-bad: 0 90% 45%; /* Red for bad stats */
   }
 }
 
@@ -64,4 +74,24 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
   }
+}
+
+/* Status color utility classes */
+.text-status-good {
+  color: hsl(var(--status-good));
+}
+.text-status-average {
+  color: hsl(var(--status-average));
+}
+.text-status-bad {
+  color: hsl(var(--status-bad));
+}
+.bg-status-good {
+  background-color: hsl(var(--status-good));
+}
+.bg-status-average {
+  background-color: hsl(var(--status-average));
+}
+.bg-status-bad {
+  background-color: hsl(var(--status-bad));
 }
