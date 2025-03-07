@@ -26,6 +26,28 @@ export function getStatusColorClass(
   }
 }
 
+// Format date to a readable string
+export function formatDate(date: Date | string, format: string = 'MM/dd/yyyy'): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  
+  // Return empty string for invalid dates
+  if (isNaN(d.getTime())) return '';
+  
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  const year = d.getFullYear();
+  
+  // Replace format tokens
+  return format
+    .replace('MM', month.toString().padStart(2, '0'))
+    .replace('dd', day.toString().padStart(2, '0'))
+    .replace('yyyy', year.toString())
+    .replace('MMMM', d.toLocaleString('default', { month: 'long' }))
+    .replace('MMM', d.toLocaleString('default', { month: 'short' }))
+    .replace('M', month.toString())
+    .replace('d', day.toString());
+}
+
 // Format number with commas
 export function formatNumber(num: number): string {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
