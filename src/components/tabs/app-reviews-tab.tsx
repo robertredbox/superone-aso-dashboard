@@ -7,7 +7,7 @@ import {
   Legend, ResponsiveContainer, PieChart, Pie, Cell,
   LineChart, Line
 } from "recharts";
-import { formatDate, getRandomDateData } from "@/lib/utils";
+import { getRandomDateData } from "@/lib/utils";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
