@@ -300,3 +300,78 @@ export function DownloadsTab() {
     .filter(item => item.source !== 'Organic')
     .reduce((sum, item) => sum + item.installs, 0);
   const avgCpi = totalPaidInstalls > 0 ? (totalPaidCost / totalPaidInstalls).toFixed(2) : 0;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Total Downloads (YTD)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {formatNumber(totalDownloads)}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              <span className={yoyGrowth >= 0 ? 'text-green-500' : 'text-red-500'}>
+                {yoyGrowth >= 0 ? '↑' : '↓'}{Math.abs(yoyGrowth).toFixed(1)}%
+              </span> from last year
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              30-Day Average
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {Math.round(last30DaysAvg)}/day
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              <span className={avgPercentChange >= 0 ? 'text-green-500' : 'text-red-500'}>
+                {avgPercentChange >= 0 ? '↑' : '↓'}{Math.abs(avgPercentChange).toFixed(1)}%
+              </span> from previous period
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              User Retention Rate
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {retentionRate}%
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {totalUninstalls} uninstalls from {totalInstalls} installs
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Peak Download Day
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {peakDownloadDay.downloads}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              on {peakDownloadDay.date} (Jan 31st)
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
