@@ -22,6 +22,31 @@ interface DownloadDataPoint {
   formattedDate?: string;
 }
 
+interface MonthlyDownloadDataPoint {
+  month: string;
+  downloads: number;
+}
+
+interface DownloadSource {
+  name: string;
+  value: number;
+  percent: number;
+}
+
+interface CountryDownload {
+  country: string;
+  downloads: number;
+  growth: number;
+}
+
+interface WeeklyTrendData {
+  week: string;
+  dateRange: string;
+  downloads: number;
+  growth?: number;
+  previousDownloads?: number;
+}
+
 // Correct daily downloads data matched with dashboard-tab.tsx
 const dailyDownloads: DownloadDataPoint[] = [
   { "date": "1/1/25", "downloads": 13 },
@@ -88,6 +113,125 @@ const dailyDownloads: DownloadDataPoint[] = [
   { "date": "3/3/25", "downloads": 33 },
   { "date": "3/4/25", "downloads": 25 },
   { "date": "3/5/25", "downloads": 28 }
+];
+
+// Calculate accurate monthly downloads based on daily data
+const calculateMonthlyDownloads = (): MonthlyDownloadDataPoint[] => {
+  try {
+    const monthlyTotals: Record<string, number> = {};
+    
+    dailyDownloads.forEach(day => {
+      const [month] = day.date.split('/');
+      
+      if (!monthlyTotals[month]) {
+        monthlyTotals[month] = 0;
+      }
+      
+      monthlyTotals[month] += day.downloads;
+    });
+    
+    // Convert to the format needed for the chart
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    return Object.keys(monthlyTotals).map(monthNumber => {
+      const monthIndex = parseInt(monthNumber) - 1;
+      return {
+        month: monthNames[monthIndex],
+        downloads: monthlyTotals[monthNumber] || 0
+      };
+    });
+  } catch (error) {
+    console.error("Error calculating monthly downloads:", error);
+    return [];
+  }
+};
+
+const monthlyDownloads = calculateMonthlyDownloads();
+
+// Weekly download trends (last 6 weeks)
+const calculateWeeklyTrends = (): WeeklyTrendData[] => {
+  try {
+    const weeklyData: WeeklyTrendData[] = [];
+    const totalWeeks = 6;
+    const daysPerWeek = 7;
+    
+    for (let i = 0; i < totalWeeks; i++) {
+      const startIndex = dailyDownloads.length - ((i + 1) * daysPerWeek);
+      const endIndex = dailyDownloads.length - (i * daysPerWeek);
+      
+      if (startIndex >= 0) {
+        const weekData = dailyDownloads.slice(Math.max(0, startIndex), endIndex);
+        const totalDownloads = weekData.reduce((sum, day) => sum + day.downloads, 0);
+        const weekNumber = totalWeeks - i;
+        
+        const startDate = weekData[0]?.date || '';
+        const endDate = weekData[weekData.length - 1]?.date || '';
+        
+        weeklyData.push({
+          week: `Week ${weekNumber}`,
+          dateRange: `${startDate} - ${endDate}`,
+          downloads: totalDownloads,
+        });
+      }
+    }
+    
+    return weeklyData.reverse();
+  } catch (error) {
+    console.error("Error calculating weekly trends:", error);
+    return [];
+  }
+};
+
+const weeklyTrends = calculateWeeklyTrends();
+
+// Add week-over-week growth to weekly trends
+const addWeeklyGrowth = (weeklyData: WeeklyTrendData[]): WeeklyTrendData[] => {
+  try {
+    return weeklyData.map((week, index) => {
+      if (index === 0) {
+        return { ...week, growth: 0 };
+      }
+      
+      const previousWeek = weeklyData[index - 1];
+      const growth = previousWeek.downloads > 0 
+        ? ((week.downloads - previousWeek.downloads) / previousWeek.downloads) * 100 
+        : 0;
+      
+      return {
+        ...week,
+        growth,
+        previousDownloads: previousWeek.downloads
+      };
+    });
+  } catch (error) {
+    console.error("Error adding weekly growth:", error);
+    return weeklyData;
+  }
+};
+
+const weeklyTrendsWithGrowth = addWeeklyGrowth(weeklyTrends);
+
+// Download sources data (from CSV analysis)
+const downloadSources: DownloadSource[] = [
+  { name: 'App Store Search', value: 1123, percent: 50.9 },
+  { name: 'App Referrer', value: 533, percent: 24.2 },
+  { name: 'Web Referrer', value: 331, percent: 15.0 },
+  { name: 'App Store Browse', value: 198, percent: 9.0 },
+  { name: 'Unavailable', value: 22, percent: 1.0 }
+];
+
+// Downloads by country data (top territories from CSV analysis)
+const downloadsByCountry: CountryDownload[] = [
+  { country: 'Germany', downloads: 474, growth: 12.5 },
+  { country: 'Philippines', downloads: 253, growth: -3.2 },
+  { country: 'Japan', downloads: 224, growth: 5.7 },
+  { country: 'United States', downloads: 148, growth: -1.3 },
+  { country: 'Australia', downloads: 144, growth: 8.9 },
+  { country: 'Côte d\'Ivoire', downloads: 129, growth: 22.1 },
+  { country: 'United Kingdom', downloads: 117, growth: -5.4 },
+  { country: 'Norway', downloads: 116, growth: 15.2 },
+  { country: 'Austria', downloads: 82, growth: 4.3 },
+  { country: 'Benin', downloads: 77, growth: 18.6 }
 ];
 
 // Format date for cleaner display
@@ -314,6 +458,182 @@ export function DownloadsTab() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
+
+      {/* Monthly Downloads and Download Sources in a row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Monthly Downloads */}
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Monthly Downloads
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={monthlyDownloads}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', paddingTop: '10px' }} 
+                />
+                <Bar 
+                  dataKey="downloads" 
+                  name="Downloads" 
+                  fill="#0088FE" 
+                  barSize={40}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Download Sources */}
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Download Sources
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={downloadSources}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={true}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                >
+                  {downloadSources.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value, name) => [`${formatNumber(value)} downloads (${downloadSources.find(s => s.name === name)?.percent}%)`, name]}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Weekly trends and Downloads by country */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Weekly download trends */}
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Weekly Download Trends
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={weeklyTrendsWithGrowth}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="week" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <YAxis 
+                  yAxisId="left"
+                  orientation="left"
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <YAxis 
+                  yAxisId="right"
+                  orientation="right"
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                  domain={[-100, 100]}
+                  tickFormatter={(value) => `${value}%`}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', paddingTop: '10px' }} 
+                />
+                <Bar 
+                  yAxisId="left"
+                  dataKey="downloads" 
+                  name="Downloads" 
+                  fill="#0088FE" 
+                  barSize={40}
+                />
+                <Line 
+                  yAxisId="right"
+                  type="monotone" 
+                  dataKey="growth" 
+                  name="Growth %" 
+                  stroke="#FF8042" 
+                  strokeWidth={2}
+                  dot={{ r: 5 }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Downloads by country */}
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Downloads by Country (Top 10)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={downloadsByCountry}
+                layout="vertical"
+                margin={{ top: 5, right: 50, left: 90, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis 
+                  dataKey="country" 
+                  type="category"
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', paddingTop: '10px' }} 
+                />
+                <Bar 
+                  dataKey="downloads" 
+                  name="Downloads" 
+                  fill="#0088FE" 
+                >
+                  {downloadsByCountry.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.growth >= 0 ? "#00C49F" : "#FF8042"} 
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
