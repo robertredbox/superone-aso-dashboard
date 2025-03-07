@@ -14,8 +14,16 @@ import { AlertCircle, TrendingUp, TrendingDown, DollarSign, Activity } from "luc
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#d884d8', '#d8d884'];
 const dateRange = getYTDDateRange();
 
+// Define data interfaces
+interface DownloadDataPoint {
+  date: string;
+  downloads: number;
+  average?: number | null;
+  formattedDate?: string;
+}
+
 // Correct daily downloads data matched with dashboard-tab.tsx
-const dailyDownloads = [
+const dailyDownloads: DownloadDataPoint[] = [
   { "date": "1/1/25", "downloads": 13 },
   { "date": "1/2/25", "downloads": 13 },
   { "date": "1/3/25", "downloads": 10 },
@@ -83,7 +91,7 @@ const dailyDownloads = [
 ];
 
 // Format date for cleaner display
-const formatDayMonth = (dateStr) => {
+const formatDayMonth = (dateStr: string): string => {
   try {
     const [month, day] = dateStr.split('/');
     return `${month}/${day}`;
@@ -94,7 +102,7 @@ const formatDayMonth = (dateStr) => {
 };
 
 // Calculate 7-day moving average
-const calculate7DayAverage = (data) => {
+const calculate7DayAverage = (data: DownloadDataPoint[]): DownloadDataPoint[] => {
   try {
     return data.map((item, index, array) => {
       if (index < 3) return { ...item, average: null };
