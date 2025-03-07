@@ -262,3 +262,206 @@ const calculate7DayAverage = (data) => {
 };
 
 const dailyDownloadsWithAverage = calculate7DayAverage(dailyDownloads);
+
+export function DownloadsTab() {
+  // Calculate total YTD downloads
+  const totalDownloads = dailyDownloads.reduce((sum, day) => sum + day.downloads, 0);
+  
+  // Calculate last year's total (example - in real app would come from historical data)
+  const lastYearDownloads = 25430; 
+  const yoyGrowth = ((totalDownloads - lastYearDownloads) / lastYearDownloads) * 100;
+
+  // Calculate 30-day average (last 30 days)
+  const last30DaysData = dailyDownloads.slice(-30);
+  const last30DaysAvg = last30DaysData.reduce((sum, day) => sum + day.downloads, 0) / last30DaysData.length;
+  
+  // Calculate previous 30-days average for comparison
+  const previous30DaysData = dailyDownloads.slice(-60, -30);
+  const previous30DaysAvg = previous30DaysData.length > 0 
+    ? previous30DaysData.reduce((sum, day) => sum + day.downloads, 0) / previous30DaysData.length 
+    : 0;
+  
+  // Calculate percentage change
+  const avgPercentChange = previous30DaysAvg > 0 
+    ? ((last30DaysAvg - previous30DaysAvg) / previous30DaysAvg) * 100 
+    : 0;
+
+  // Calculate total installs and uninstalls
+  const totalInstalls = totalDownloads;
+  const totalUninstalls = Math.round(totalDownloads * 0.10); // Assuming 10% uninstall rate
+  const retentionRate = Math.round((totalInstalls - totalUninstalls) / totalInstalls * 100);
+
+  // Calculate peak download day
+  const peakDownloadDay = [...dailyDownloads].sort((a, b) => b.downloads - a.downloads)[0];
+
+  // Calculate weighted average CPI
+  const totalPaidCost = acquisitionCostData.reduce((sum, item) => sum + item.cost, 0);
+  const totalPaidInstalls = acquisitionCostData
+    .filter(item => item.source !== 'Organic')
+    .reduce((sum, item) => sum + item.installs, 0);
+  const avgCpi = totalPaidInstalls > 0 ? (totalPaidCost / totalPaidInstalls).toFixed(2) : 0;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Total Downloads (YTD)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {formatNumber(totalDownloads)}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              <span className={yoyGrowth >= 0 ? 'text-green-500' : 'text-red-500'}>
+                {yoyGrowth >= 0 ? '↑' : '↓'}{Math.abs(yoyGrowth).toFixed(1)}%
+              </span> from last year
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              30-Day Average
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {Math.round(last30DaysAvg)}/day
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              <span className={avgPercentChange >= 0 ? 'text-green-500' : 'text-red-500'}>
+                {avgPercentChange >= 0 ? '↑' : '↓'}{Math.abs(avgPercentChange).toFixed(1)}%
+              </span> from previous period
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              User Retention Rate
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {retentionRate}%
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {totalUninstalls} uninstalls from {totalInstalls} installs
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Peak Download Day
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              {peakDownloadDay.downloads}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }}>
+              on {peakDownloadDay.date} (Jan 31st)
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Monthly Downloads (YTD: {dateRange.formattedStart} - {dateRange.formattedEnd})
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={monthlyDownloads}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip 
+                  formatter={(value) => [`${value} downloads`, 'Monthly Total']}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+                <Bar dataKey="downloads" name="Downloads" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
+              Daily Downloads with 7-Day Average
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={dailyDownloadsWithAverage.slice(-30)}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="formattedDate" 
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                  interval="preserveStartEnd"
+                  tickCount={6}
+                />
+                <YAxis 
+                  domain={[0, 'dataMax + 20']}
+                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Tooltip 
+                  formatter={(value, name) => [
+                    `${value} ${name === 'downloads' ? 'downloads' : ''}`,
+                    name === 'downloads' ? 'Daily Downloads' : '7-Day Average'
+                  ]}
+                  contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="downloads" 
+                  name="Daily Downloads"
+                  stroke="#0088FE" 
+                  strokeWidth={2}
+                  activeDot={{ r: 8 }} 
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="average" 
+                  name="7-Day Average"
+                  stroke="#FF8042" 
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls={true}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
