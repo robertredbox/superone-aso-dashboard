@@ -83,7 +83,7 @@ export function DashboardSample() {
             <CardTitle className="text-sm font-medium">Category Position</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${getStatusColorClass(35, { good: 10, average: 30 }, true)}`}>
+            <div className={`text-2xl font-bold ${getStatusColorClass(35, { good: 10, average: 30 }, 'text', true)}`}>
               #35
             </div>
             <p className="text-xs text-muted-foreground mt-1">
