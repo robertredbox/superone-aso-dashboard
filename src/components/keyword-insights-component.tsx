@@ -284,6 +284,7 @@ export function KeywordInsightsComponent({ keywords = enhancedKeywordData, timef
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
+                data={keywords}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -292,7 +293,6 @@ export function KeywordInsightsComponent({ keywords = enhancedKeywordData, timef
                   type="category"
                   allowDuplicatedCategory={false}
                   tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  data={keywords}
                 />
                 <YAxis 
                   yAxisId="left"
@@ -311,7 +311,6 @@ export function KeywordInsightsComponent({ keywords = enhancedKeywordData, timef
                   dataKey="impressions" 
                   name="Impressions" 
                   fill="#8884d8" 
-                  data={keywords}
                 />
                 <Line 
                   yAxisId="right" 
@@ -319,7 +318,6 @@ export function KeywordInsightsComponent({ keywords = enhancedKeywordData, timef
                   dataKey="conversionRate" 
                   name="Conversion Rate (%)" 
                   stroke="#ff7300"
-                  data={keywords}
                 />
               </ComposedChart>
             </ResponsiveContainer>
