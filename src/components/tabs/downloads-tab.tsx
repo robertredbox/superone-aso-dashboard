@@ -230,3 +230,35 @@ const acquisitionCostData = [
   { source: 'Search Ads', cost: 620, installs: 186, cpi: 3.33 },
   { source: 'Other', cost: 105, installs: 53, cpi: 1.98 }
 ];
+
+// Format date for cleaner display
+const formatDayMonth = (dateStr) => {
+  try {
+    const [month, day] = dateStr.split('/');
+    return `${month}/${day}`;
+  } catch (error) {
+    return dateStr;
+  }
+};
+
+// Calculate 7-day moving average
+const calculate7DayAverage = (data) => {
+  return data.map((item, index, array) => {
+    if (index < 3) return { ...item, average: null };
+    
+    // Calculate average of current day and 6 days before
+    const sumPrev7Days = array
+      .slice(Math.max(0, index - 6), index + 1)
+      .reduce((sum, curr) => sum + curr.downloads, 0);
+    
+    const avg = sumPrev7Days / Math.min(7, index + 1);
+    
+    return {
+      ...item,
+      average: parseFloat(avg.toFixed(1)),
+      formattedDate: formatDayMonth(item.date)
+    };
+  });
+};
+
+const dailyDownloadsWithAverage = calculate7DayAverage(dailyDownloads);
