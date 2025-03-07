@@ -523,7 +523,10 @@ export function DownloadsTab() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  formatter={(value, name) => [`${formatNumber(typeof value === 'number' ? value : 0)} downloads (${downloadSources.find(s => s.name === name)?.percent}%)`, name]}
+                  formatter={(value, name) => {
+                    const source = downloadSources.find(s => s.name === name);
+                    return [`${formatNumber(typeof value === 'number' ? value : 0)} downloads (${source ? source.percent : 0}%)`, name];
+                  }}
                   contentStyle={{ fontFamily: 'Roboto, sans-serif' }}
                 />
                 <Legend 
@@ -556,36 +559,17 @@ export function DownloadsTab() {
                   tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
                 />
                 <YAxis 
-                  yAxisId="left"
-                  orientation="left"
                   tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                />
-                <YAxis 
-                  yAxisId="right"
-                  orientation="right"
-                  tick={{ fontSize: 12, fontFamily: 'Roboto, sans-serif' }}
-                  domain={[-100, 100]}
-                  tickFormatter={(value) => `${value}%`}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend 
                   wrapperStyle={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', paddingTop: '10px' }} 
                 />
                 <Bar 
-                  yAxisId="left"
                   dataKey="downloads" 
                   name="Downloads" 
                   fill="#0088FE" 
                   barSize={40}
-                />
-                <Line 
-                  yAxisId="right"
-                  type="monotone" 
-                  dataKey="growth" 
-                  name="Growth %" 
-                  stroke="#FF8042" 
-                  strokeWidth={2}
-                  dot={{ r: 5 }}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -620,15 +604,8 @@ export function DownloadsTab() {
                 <Bar 
                   dataKey="downloads" 
                   name="Downloads" 
-                  fill="#0088FE" 
-                >
-                  {downloadsByCountry.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.growth >= 0 ? "#00C49F" : "#FF8042"} 
-                    />
-                  ))}
-                </Bar>
+                  fill="#00C49F"
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
