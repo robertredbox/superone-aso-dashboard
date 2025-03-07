@@ -180,6 +180,95 @@ const keywordData = keywordsMonthlyData.map(kw => {
   };
 }).filter(kw => kw.volume > 0 && kw.ranking > 0);
 
+// Generate keyword recommendations for the KeywordRecommendationComponent
+const keywordRecommendations = [
+  {
+    keyword: "football fan game",
+    volume: 37,
+    difficulty: 42,
+    potentialRanking: 8,
+    trafficPotential: 520,
+    relevanceScore: 85,
+    competitorUsage: 2,
+    metrics: {
+      relevance: 85,
+      competition: 42,
+      potential: 78,
+      conversion: 65,
+      difficulty: 42
+    },
+    origin: "competitor analysis"
+  },
+  {
+    keyword: "soccer fantasy game",
+    volume: 45,
+    difficulty: 55,
+    potentialRanking: 12,
+    trafficPotential: 480,
+    relevanceScore: 80,
+    competitorUsage: 3,
+    metrics: {
+      relevance: 80,
+      competition: 55,
+      potential: 72,
+      conversion: 60,
+      difficulty: 55
+    },
+    origin: "search trends"
+  },
+  {
+    keyword: "football manager mobile",
+    volume: 68,
+    difficulty: 75,
+    potentialRanking: 18,
+    trafficPotential: 640,
+    relevanceScore: 75,
+    competitorUsage: 5,
+    metrics: {
+      relevance: 75,
+      competition: 75,
+      potential: 65,
+      conversion: 50,
+      difficulty: 75
+    },
+    origin: "app store suggestions"
+  },
+  {
+    keyword: "team manager game",
+    volume: 28,
+    difficulty: 35,
+    potentialRanking: 5,
+    trafficPotential: 390,
+    relevanceScore: 70,
+    competitorUsage: 1,
+    metrics: {
+      relevance: 70,
+      competition: 35,
+      potential: 82,
+      conversion: 68,
+      difficulty: 35
+    },
+    origin: "user reviews"
+  },
+  {
+    keyword: "football card collection",
+    volume: 32,
+    difficulty: 48,
+    potentialRanking: 10,
+    trafficPotential: 410,
+    relevanceScore: 78,
+    competitorUsage: 2,
+    metrics: {
+      relevance: 78,
+      competition: 48,
+      potential: 75,
+      conversion: 62,
+      difficulty: 48
+    },
+    origin: "search trends"
+  }
+];
+
 // Sort keyword data by volume
 const sortedKeywordData = [...keywordData].sort((a, b) => b.volume - a.volume);
 
@@ -435,6 +524,7 @@ export function KeywordPerformanceTab() {
 
         <TabsContent value="recommendations" className="space-y-6">
           <KeywordRecommendationComponent 
+            recommendations={keywordRecommendations}
             timeframe="Last 30 days (March 2025)"
           />
         </TabsContent>
