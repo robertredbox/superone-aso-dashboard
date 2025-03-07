@@ -80,3 +80,84 @@ const dailyDownloads = [
   { "date": "3/4/25", "downloads": 25 },
   { "date": "3/5/25", "downloads": 28 }
 ];
+
+// Calculate accurate monthly downloads based on daily data
+const calculateMonthlyDownloads = () => {
+  const monthlyTotals = {};
+  
+  dailyDownloads.forEach(day => {
+    const [month] = day.date.split('/');
+    
+    if (!monthlyTotals[month]) {
+      monthlyTotals[month] = 0;
+    }
+    
+    monthlyTotals[month] += day.downloads;
+  });
+  
+  // Convert to the format needed for the chart
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  return monthNames.map((month, index) => {
+    const monthNumber = (index + 1).toString();
+    return {
+      month,
+      downloads: monthlyTotals[monthNumber] || 0
+    };
+  });
+};
+
+const monthlyDownloads = calculateMonthlyDownloads();
+
+// Weekly download trends (last 6 weeks)
+const calculateWeeklyTrends = () => {
+  const weeklyData = [];
+  const totalWeeks = 6;
+  const daysPerWeek = 7;
+  
+  for (let i = 0; i < totalWeeks; i++) {
+    const startIndex = dailyDownloads.length - ((i + 1) * daysPerWeek);
+    const endIndex = dailyDownloads.length - (i * daysPerWeek);
+    
+    if (startIndex >= 0) {
+      const weekData = dailyDownloads.slice(Math.max(0, startIndex), endIndex);
+      const totalDownloads = weekData.reduce((sum, day) => sum + day.downloads, 0);
+      const weekNumber = totalWeeks - i;
+      
+      const startDate = weekData[0]?.date || '';
+      const endDate = weekData[weekData.length - 1]?.date || '';
+      
+      weeklyData.push({
+        week: `Week ${weekNumber}`,
+        dateRange: `${startDate} - ${endDate}`,
+        downloads: totalDownloads,
+      });
+    }
+  }
+  
+  return weeklyData.reverse();
+};
+
+const weeklyTrends = calculateWeeklyTrends();
+
+// Add week-over-week growth to weekly trends
+const addWeeklyGrowth = (weeklyData) => {
+  return weeklyData.map((week, index) => {
+    if (index === 0) {
+      return { ...week, growth: 0 };
+    }
+    
+    const previousWeek = weeklyData[index - 1];
+    const growth = previousWeek.downloads > 0 
+      ? ((week.downloads - previousWeek.downloads) / previousWeek.downloads) * 100 
+      : 0;
+    
+    return {
+      ...week,
+      growth,
+      previousDownloads: previousWeek.downloads
+    };
+  });
+};
+
+const weeklyTrendsWithGrowth = addWeeklyGrowth(weeklyTrends);
