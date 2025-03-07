@@ -7,6 +7,9 @@ import {
   Legend, ResponsiveContainer
 } from "recharts";
 import { getRandomDateData } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { KeywordInsightsComponent } from "@/components/keyword-insights-component";
+import { KeywordRecommendationComponent } from "@/components/keyword-recommendation-component";
 
 // Real keyword data with month-by-month tracking
 const keywordsMonthlyData = [
@@ -210,195 +213,217 @@ const superFanHistory = superFanKeyword ? superFanKeyword.history : [];
 export function KeywordPerformanceTab() {
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Keywords Monthly Analysis (January - March 2025)</CardTitle>
-          <CardDescription>Comparing keyword performance across the first quarter</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-md border overflow-auto">
-            <table className="min-w-full divide-y divide-border">
-              <thead>
-                <tr className="bg-muted/50">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Keyword</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">January</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">February</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">March</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Feb-Mar Changes</th>
-                </tr>
-              </thead>
-              <tbody className="bg-card divide-y divide-border">
-                {keywordsMonthlyData.slice(0, 10).map((keyword, index) => (
-                  <tr key={index}>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">{keyword.keyword}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                      {keyword.january ? (
-                        <>
-                          Rank: #{keyword.january.ranking}<br />
-                          Vol: {keyword.january.volume}
-                        </>
-                      ) : "N/A"}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                      {keyword.february ? (
-                        <>
-                          Rank: #{keyword.february.ranking}<br />
-                          Vol: {keyword.february.volume}
-                        </>
-                      ) : "N/A"}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                      {keyword.march ? (
-                        <>
-                          Rank: #{keyword.march.ranking}<br />
-                          Vol: {keyword.march.volume}
-                        </>
-                      ) : "N/A"}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                      {keyword.february && keyword.march ? (
-                        <>
-                          <span className={keyword.changes.rankingChange > 0 ? "text-green-500" : keyword.changes.rankingChange < 0 ? "text-red-500" : "text-gray-500"}>
-                            Rank: {keyword.changes.rankingChange > 0 ? "+" : ""}{keyword.changes.rankingChange}
-                          </span>
-                          <br />
-                          <span className={keyword.changes.volumeChange > 0 ? "text-green-500" : keyword.changes.volumeChange < 0 ? "text-red-500" : "text-gray-500"}>
-                            Vol: {keyword.changes.volumeChange > 0 ? "+" : ""}{keyword.changes.volumeChange}
-                          </span>
-                        </>
-                      ) : "N/A"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid grid-cols-3 w-full max-w-lg mx-auto mb-6">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="insights">Advanced Insights</TabsTrigger>
+          <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Keywords Monthly Analysis (January - March 2025)</CardTitle>
+              <CardDescription>Comparing keyword performance across the first quarter</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-md border overflow-auto">
+                <table className="min-w-full divide-y divide-border">
+                  <thead>
+                    <tr className="bg-muted/50">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Keyword</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">January</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">February</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">March</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Feb-Mar Changes</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-card divide-y divide-border">
+                    {keywordsMonthlyData.slice(0, 10).map((keyword, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">{keyword.keyword}</td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm">
+                          {keyword.january ? (
+                            <>
+                              Rank: #{keyword.january.ranking}<br />
+                              Vol: {keyword.january.volume}
+                            </>
+                          ) : "N/A"}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm">
+                          {keyword.february ? (
+                            <>
+                              Rank: #{keyword.february.ranking}<br />
+                              Vol: {keyword.february.volume}
+                            </>
+                          ) : "N/A"}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm">
+                          {keyword.march ? (
+                            <>
+                              Rank: #{keyword.march.ranking}<br />
+                              Vol: {keyword.march.volume}
+                            </>
+                          ) : "N/A"}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm">
+                          {keyword.february && keyword.march ? (
+                            <>
+                              <span className={keyword.changes.rankingChange > 0 ? "text-green-500" : keyword.changes.rankingChange < 0 ? "text-red-500" : "text-gray-500"}>
+                                Rank: {keyword.changes.rankingChange > 0 ? "+" : ""}{keyword.changes.rankingChange}
+                              </span>
+                              <br />
+                              <span className={keyword.changes.volumeChange > 0 ? "text-green-500" : keyword.changes.volumeChange < 0 ? "text-red-500" : "text-gray-500"}>
+                                Vol: {keyword.changes.volumeChange > 0 ? "+" : ""}{keyword.changes.volumeChange}
+                              </span>
+                            </>
+                          ) : "N/A"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="mt-6 p-4 bg-muted/20 rounded-md">
+                <h3 className="text-lg font-semibold mb-3">Key Insights:</h3>
+                <ul className="space-y-2 text-sm">
+                  <li><span className="font-medium">Ranking Improvements:</span> "pacybits" (7 positions) and "mad fut 25" (6 positions) showed the biggest ranking improvements from February to March.</li>
+                  <li><span className="font-medium">Volume Leaders:</span> "fc mobile 25" maintains the highest search volume (51), consistently performing well across the quarter.</li>
+                  <li><span className="font-medium">Brand Keywords:</span> "super one" continues to have excellent rankings (position #2), though volume remained static from February to March.</li>
+                  <li><span className="font-medium">Emerging Keywords:</span> "ultimate football gm" is a relatively new keyword (appearing in February) that's showing improvement in March with a 7-position ranking boost.</li>
+                  <li><span className="font-medium">Optimization Opportunities:</span> Several high-volume keywords like "madfut" and "madfut 25" have remained relatively stable, suggesting opportunity for targeted ASO efforts.</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Brand Keyword Performance</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={brandKeywords}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    layout="vertical"
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis type="category" dataKey="name" width={100} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="volume" name="Search Volume" fill="#8884d8" />
+                    <Bar dataKey="ranking" name="Ranking" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Non-Brand Keyword Performance</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={nonBrandKeywords}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    layout="vertical"
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis type="category" dataKey="name" width={100} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="volume" name="Search Volume" fill="#8884d8" />
+                    <Bar dataKey="ranking" name="Ranking" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Brand Keyword Ranking Trend</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="date"
+                      type="category"
+                      allowDuplicatedCategory={false}
+                    />
+                    <YAxis reversed domain={[1, 100]} />
+                    <Tooltip />
+                    <Legend />
+                    {superOneKeyword && (
+                      <Line 
+                        data={superOneHistory}
+                        type="monotone" 
+                        dataKey="ranking" 
+                        name="super one" 
+                        stroke="#8884d8" 
+                        activeDot={{ r: 8 }} 
+                      />
+                    )}
+                    {superFanKeyword && (
+                      <Line 
+                        data={superFanHistory}
+                        type="monotone" 
+                        dataKey="ranking" 
+                        name="super fan" 
+                        stroke="#82ca9d" 
+                        activeDot={{ r: 8 }} 
+                      />
+                    )}
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Organic vs. Paid Keyword Traffic</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={compareData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="organic" name="Organic %" stackId="a" fill="#8884d8" />
+                    <Bar dataKey="paid" name="Paid %" stackId="a" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </div>
-          
-          <div className="mt-6 p-4 bg-muted/20 rounded-md">
-            <h3 className="text-lg font-semibold mb-3">Key Insights:</h3>
-            <ul className="space-y-2 text-sm">
-              <li><span className="font-medium">Ranking Improvements:</span> "pacybits" (7 positions) and "mad fut 25" (6 positions) showed the biggest ranking improvements from February to March.</li>
-              <li><span className="font-medium">Volume Leaders:</span> "fc mobile 25" maintains the highest search volume (51), consistently performing well across the quarter.</li>
-              <li><span className="font-medium">Brand Keywords:</span> "super one" continues to have excellent rankings (position #2), though volume remained static from February to March.</li>
-              <li><span className="font-medium">Emerging Keywords:</span> "ultimate football gm" is a relatively new keyword (appearing in February) that's showing improvement in March with a 7-position ranking boost.</li>
-              <li><span className="font-medium">Optimization Opportunities:</span> Several high-volume keywords like "madfut" and "madfut 25" have remained relatively stable, suggesting opportunity for targeted ASO efforts.</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Brand Keyword Performance</CardTitle>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={brandKeywords}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                layout="vertical"
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis type="category" dataKey="name" width={100} />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="volume" name="Search Volume" fill="#8884d8" />
-                <Bar dataKey="ranking" name="Ranking" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <TabsContent value="insights" className="space-y-6">
+          <KeywordInsightsComponent 
+            timeframe="Last 30 days (March 2025)"
+          />
+        </TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Non-Brand Keyword Performance</CardTitle>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={nonBrandKeywords}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                layout="vertical"
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis type="category" dataKey="name" width={100} />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="volume" name="Search Volume" fill="#8884d8" />
-                <Bar dataKey="ranking" name="Ranking" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Top Brand Keyword Ranking Trend</CardTitle>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="date"
-                  type="category"
-                  allowDuplicatedCategory={false}
-                />
-                <YAxis reversed domain={[1, 100]} />
-                <Tooltip />
-                <Legend />
-                {superOneKeyword && (
-                  <Line 
-                    data={superOneHistory}
-                    type="monotone" 
-                    dataKey="ranking" 
-                    name="super one" 
-                    stroke="#8884d8" 
-                    activeDot={{ r: 8 }} 
-                  />
-                )}
-                {superFanKeyword && (
-                  <Line 
-                    data={superFanHistory}
-                    type="monotone" 
-                    dataKey="ranking" 
-                    name="super fan" 
-                    stroke="#82ca9d" 
-                    activeDot={{ r: 8 }} 
-                  />
-                )}
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Organic vs. Paid Keyword Traffic</CardTitle>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={compareData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="organic" name="Organic %" stackId="a" fill="#8884d8" />
-                <Bar dataKey="paid" name="Paid %" stackId="a" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="recommendations" className="space-y-6">
+          <KeywordRecommendationComponent 
+            timeframe="Last 30 days (March 2025)"
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
