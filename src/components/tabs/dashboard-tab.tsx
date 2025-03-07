@@ -138,268 +138,73 @@ const formatDate = (dateStr: string): string => {
   }
 };
 
-// Real data from the CSV file - YTD Jan 1st to March 6th, 2025
+// Real data from the CSV file - YTD Jan 1st to March 5th, 2025
+// Updated with values from user's CSV
 const realDownloads: DownloadDataPoint[] = [
-  {
-    "date": "1/1/25",
-    "value": 58
-  },
-  {
-    "date": "1/2/25",
-    "value": 47
-  },
-  {
-    "date": "1/3/25",
-    "value": 49
-  },
-  {
-    "date": "1/4/25",
-    "value": 53
-  },
-  {
-    "date": "1/5/25",
-    "value": 56
-  },
-  {
-    "date": "1/6/25",
-    "value": 42
-  },
-  {
-    "date": "1/7/25",
-    "value": 37
-  },
-  {
-    "date": "1/8/25",
-    "value": 41
-  },
-  {
-    "date": "1/9/25",
-    "value": 38
-  },
-  {
-    "date": "1/10/25",
-    "value": 43
-  },
-  {
-    "date": "1/11/25",
-    "value": 52
-  },
-  {
-    "date": "1/12/25",
-    "value": 49
-  },
-  {
-    "date": "1/13/25",
-    "value": 45
-  },
-  {
-    "date": "1/14/25",
-    "value": 39
-  },
-  {
-    "date": "1/15/25",
-    "value": 33
-  },
-  {
-    "date": "1/16/25",
-    "value": 36
-  },
-  {
-    "date": "1/17/25",
-    "value": 47
-  },
-  {
-    "date": "1/18/25",
-    "value": 51
-  },
-  {
-    "date": "1/19/25",
-    "value": 55
-  },
-  {
-    "date": "1/20/25",
-    "value": 53
-  },
-  {
-    "date": "1/21/25",
-    "value": 48
-  },
-  {
-    "date": "1/22/25",
-    "value": 45
-  },
-  {
-    "date": "1/23/25",
-    "value": 36
-  },
-  {
-    "date": "1/24/25",
-    "value": 31
-  },
-  {
-    "date": "1/25/25",
-    "value": 44
-  },
-  {
-    "date": "1/26/25",
-    "value": 39
-  },
-  {
-    "date": "1/27/25",
-    "value": 35
-  },
-  {
-    "date": "1/28/25",
-    "value": 28
-  },
-  {
-    "date": "1/29/25",
-    "value": 26
-  },
-  {
-    "date": "1/30/25",
-    "value": 31
-  },
-  {
-    "date": "1/31/25",
-    "value": 36
-  },
-  {
-    "date": "2/1/25",
-    "value": 39
-  },
-  {
-    "date": "2/2/25",
-    "value": 42
-  },
-  {
-    "date": "2/3/25",
-    "value": 37
-  },
-  {
-    "date": "2/4/25",
-    "value": 68
-  },
-  {
-    "date": "2/5/25",
-    "value": 53
-  },
-  {
-    "date": "2/6/25",
-    "value": 48
-  },
-  {
-    "date": "2/7/25",
-    "value": 38
-  },
-  {
-    "date": "2/8/25",
-    "value": 41
-  },
-  {
-    "date": "2/9/25",
-    "value": 43
-  },
-  {
-    "date": "2/10/25",
-    "value": 51
-  },
-  {
-    "date": "2/11/25",
-    "value": 35
-  },
-  {
-    "date": "2/12/25",
-    "value": 29
-  },
-  {
-    "date": "2/13/25",
-    "value": 40
-  },
-  {
-    "date": "2/14/25",
-    "value": 33
-  },
-  {
-    "date": "2/15/25",
-    "value": 40
-  },
-  {
-    "date": "2/16/25",
-    "value": 26
-  },
-  {
-    "date": "2/17/25",
-    "value": 27
-  },
-  {
-    "date": "2/18/25",
-    "value": 26
-  },
-  {
-    "date": "2/19/25",
-    "value": 19
-  },
-  {
-    "date": "2/20/25",
-    "value": 22
-  },
-  {
-    "date": "2/21/25",
-    "value": 29
-  },
-  {
-    "date": "2/22/25",
-    "value": 29
-  },
-  {
-    "date": "2/23/25",
-    "value": 20
-  },
-  {
-    "date": "2/24/25",
-    "value": 26
-  },
-  {
-    "date": "2/25/25",
-    "value": 14
-  },
-  {
-    "date": "2/26/25",
-    "value": 22
-  },
-  {
-    "date": "2/27/25",
-    "value": 14
-  },
-  {
-    "date": "2/28/25",
-    "value": 18
-  },
-  {
-    "date": "3/1/25",
-    "value": 17
-  },
-  {
-    "date": "3/2/25",
-    "value": 31
-  },
-  {
-    "date": "3/3/25",
-    "value": 33
-  },
-  {
-    "date": "3/4/25",
-    "value": 25
-  },
-  {
-    "date": "3/5/25",
-    "value": 28
-  },
-  {
-    "date": "3/6/25",
-    "value": 24
-  }
+  { "date": "1/1/25", "value": 13 },
+  { "date": "1/2/25", "value": 13 },
+  { "date": "1/3/25", "value": 10 },
+  { "date": "1/4/25", "value": 7 },
+  { "date": "1/5/25", "value": 14 },
+  { "date": "1/6/25", "value": 11 },
+  { "date": "1/7/25", "value": 8 },
+  { "date": "1/8/25", "value": 20 },
+  { "date": "1/9/25", "value": 15 },
+  { "date": "1/10/25", "value": 18 },
+  { "date": "1/11/25", "value": 11 },
+  { "date": "1/12/25", "value": 18 },
+  { "date": "1/13/25", "value": 15 },
+  { "date": "1/14/25", "value": 17 },
+  { "date": "1/15/25", "value": 22 },
+  { "date": "1/16/25", "value": 27 },
+  { "date": "1/17/25", "value": 39 },
+  { "date": "1/18/25", "value": 40 },
+  { "date": "1/19/25", "value": 27 },
+  { "date": "1/20/25", "value": 68 },
+  { "date": "1/21/25", "value": 62 },
+  { "date": "1/22/25", "value": 43 },
+  { "date": "1/23/25", "value": 26 },
+  { "date": "1/24/25", "value": 27 },
+  { "date": "1/25/25", "value": 13 },
+  { "date": "1/26/25", "value": 24 },
+  { "date": "1/27/25", "value": 41 },
+  { "date": "1/28/25", "value": 27 },
+  { "date": "1/29/25", "value": 22 },
+  { "date": "1/30/25", "value": 176 },
+  { "date": "1/31/25", "value": 186 },
+  { "date": "2/1/25", "value": 86 },
+  { "date": "2/2/25", "value": 67 },
+  { "date": "2/3/25", "value": 70 },
+  { "date": "2/4/25", "value": 68 },
+  { "date": "2/5/25", "value": 53 },
+  { "date": "2/6/25", "value": 48 },
+  { "date": "2/7/25", "value": 38 },
+  { "date": "2/8/25", "value": 41 },
+  { "date": "2/9/25", "value": 43 },
+  { "date": "2/10/25", "value": 51 },
+  { "date": "2/11/25", "value": 35 },
+  { "date": "2/12/25", "value": 29 },
+  { "date": "2/13/25", "value": 40 },
+  { "date": "2/14/25", "value": 33 },
+  { "date": "2/15/25", "value": 40 },
+  { "date": "2/16/25", "value": 26 },
+  { "date": "2/17/25", "value": 27 },
+  { "date": "2/18/25", "value": 26 },
+  { "date": "2/19/25", "value": 19 },
+  { "date": "2/20/25", "value": 22 },
+  { "date": "2/21/25", "value": 29 },
+  { "date": "2/22/25", "value": 29 },
+  { "date": "2/23/25", "value": 20 },
+  { "date": "2/24/25", "value": 26 },
+  { "date": "2/25/25", "value": 14 },
+  { "date": "2/26/25", "value": 22 },
+  { "date": "2/27/25", "value": 14 },
+  { "date": "2/28/25", "value": 18 },
+  { "date": "3/1/25", "value": 17 },
+  { "date": "3/2/25", "value": 31 },
+  { "date": "3/3/25", "value": 33 },
+  { "date": "3/4/25", "value": 25 },
+  { "date": "3/5/25", "value": 28 }
 ];
 
 // Process the data and add the 7-day moving average
@@ -555,7 +360,7 @@ export function DashboardTab() {
             <CardTitle style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }} className="text-sm font-medium">Conversion Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatPercentage(3.2)}</div>
+            <div style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-2xl font-bold">{formatPercentage(9.64)}</div>
             <p style={{ fontFamily: '"Roboto", sans-serif', fontWeight: 400 }} className="text-xs text-muted-foreground mt-1">
               +0.5% from last month
             </p>
@@ -746,8 +551,8 @@ export function DashboardTab() {
                 stroke="#8884d8" 
                 activeDot={{ r: 6 }} 
               />
-              <ReferenceLine y={3.0} stroke="#FF8042" strokeDasharray="3 3" label={{ 
-                value: "Target (3%)", 
+              <ReferenceLine y={9.64} stroke="#FF8042" strokeDasharray="3 3" label={{ 
+                value: "Current (9.64%)", 
                 position: "insideBottomRight",
                 style: { fontFamily: 'Roboto, sans-serif', fontSize: '12px' }
               }} />
