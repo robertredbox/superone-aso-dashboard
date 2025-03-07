@@ -18,17 +18,12 @@ export function SideNav() {
         </div>
       </div>
       
-      <nav className="space-y-2 flex-1">
-        <Link href="/" className="block p-2 hover:bg-accent rounded-md">
-          Dashboard
-        </Link>
-        <Link href="/" className="block p-2 hover:bg-accent rounded-md">
-          Settings
-        </Link>
-        <Link href="/" className="block p-2 hover:bg-accent rounded-md">
-          App Store Connect
-        </Link>
-      </nav>
+      {/* Removed redundant navigation links */}
+      <div className="flex-1">
+        <div className="text-xs text-muted-foreground mt-2 mb-4 px-2">
+          SuperOne Fan Battle - iOS
+        </div>
+      </div>
       
       <div className="mt-auto pt-4 border-t flex items-center justify-between">
         <span className="text-xs text-muted-foreground">v1.0.0</span>
