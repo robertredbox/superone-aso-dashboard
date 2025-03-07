@@ -5,58 +5,66 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatNumber(number: number): string {
-  return new Intl.NumberFormat('en-US').format(number);
+// Helper function to determine status color class based on value
+export function getStatusColorClass(
+  value: number, 
+  thresholds: { good: number; average: number; }, 
+  type: 'text' | 'bg' = 'text',
+  inverse: boolean = false
+): string {
+  const prefix = type === 'text' ? 'text-status-' : 'bg-status-';
+  
+  if (!inverse) {
+    if (value >= thresholds.good) return `${prefix}good`;
+    if (value >= thresholds.average) return `${prefix}average`;
+    return `${prefix}bad`;
+  } else {
+    // Inverse logic (lower is better)
+    if (value <= thresholds.good) return `${prefix}good`;
+    if (value <= thresholds.average) return `${prefix}average`;
+    return `${prefix}bad`;
+  }
 }
 
-export function formatPercentage(number: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'percent',
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  }).format(number / 100);
+// Format number with commas
+export function formatNumber(num: number): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(date);
+// Format percentage
+export function formatPercentage(num: number): string {
+  return `${num.toFixed(2)}%`;
 }
 
-export function getRandomData(length: number, min: number, max: number) {
-  return Array.from({ length }, () => 
-    Math.floor(Math.random() * (max - min + 1)) + min
-  );
+// Get the YTD date range
+export function getYTDDateRange() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1); // January 1st of current year
+  
+  return {
+    start: startOfYear,
+    end: now,
+    formattedStart: `${startOfYear.getMonth()+1}/${startOfYear.getDate()}/${startOfYear.getFullYear()}`,
+    formattedEnd: `${now.getMonth()+1}/${now.getDate()}/${now.getFullYear()}`
+  };
 }
 
+// Generate random date data for charts
 export function getRandomDateData(days: number) {
-  const data = [];
+  const result = [];
   const today = new Date();
   
-  for (let i = days; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(today.getDate() - i);
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
     
-    data.push({
-      date: formatDate(date),
-      value: Math.floor(Math.random() * 100),
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`;
+    
+    result.push({
+      date: formattedDate,
+      value: Math.floor(Math.random() * 100)
     });
   }
   
-  return data;
-}
-
-export function getYTDDateRange() {
-  const today = new Date();
-  const startDate = new Date(today.getFullYear(), 0, 1); // January 1st of current year
-  
-  return {
-    start: startDate,
-    end: today,
-    formattedStart: formatDate(startDate),
-    formattedEnd: formatDate(today),
-    territory: 'United States' // Default territory
-  };
+  return result;
 }
