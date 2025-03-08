@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Head from 'next/head';
 
@@ -12,27 +14,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 }) => {
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Roboto+Slab:wght@500&display=swap" 
-          rel="stylesheet" 
-        />
-      </Head>
-      
       <div className="app-container min-h-screen">
-        <style jsx global>{`
-          body {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-          }
-          
-          h1, h2, h3, h4, h5, h6 {
-            font-family: 'Roboto Slab', serif;
-            font-weight: 500;
-          }
-        `}</style>
-        
         <header className="border-b py-4 px-6">
           <h1 className="text-2xl" style={{ fontFamily: '"Roboto Slab", serif', fontWeight: 500 }}>
             {title}
