@@ -2,17 +2,21 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { format } from 'date-fns';
 
-// Extend the jsPDF type to include autoTable and internal properties
+// Extend the jsPDF type to include autoTable and additional internal properties
 declare module 'jspdf' {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
     internal: {
+      events: any;
+      scaleFactor: number;
       pageSize: {
         width: number;
         height: number;
         getWidth: () => number;
         getHeight: () => number;
       };
+      pages: number[];
+      getEncryptor(objectId: number): (data: string) => string;
       getNumberOfPages: () => number;
     };
   }
