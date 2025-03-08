@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { GlobalStyles } from '@/components/GlobalStyles';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,17 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <style jsx global>{`
-            body {
-              font-family: 'Roboto', sans-serif;
-              font-weight: 400;
-            }
-            
-            h1, h2, h3, h4, h5, h6 {
-              font-family: 'Roboto Slab', serif;
-              font-weight: 500;
-            }
-          `}</style>
+          <GlobalStyles />
           {children}
         </ThemeProvider>
       </body>
