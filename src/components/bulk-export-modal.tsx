@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PDFExportService } from '@/lib/pdf-export';
-import { FilePdf, X, Loader2, Check } from 'lucide-react';
+import { FileText, X, Loader2, Check } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -228,7 +228,7 @@ export default function BulkExportModal({
                 </>
               ) : (
                 <>
-                  <FilePdf className="mr-2 h-4 w-4" />
+                  <FileText className="mr-2 h-4 w-4" />
                   Export {selectedCount} {selectedCount === 1 ? 'Item' : 'Items'}
                 </>
               )}
