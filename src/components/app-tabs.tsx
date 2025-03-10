@@ -7,6 +7,7 @@ import { CompetitiveAnalysisTab } from "@/components/tabs/competitive-analysis-t
 import { AppReviewsTab } from "@/components/tabs/app-reviews-tab";
 import { RankingsTab } from "@/components/tabs/rankings-tab";
 import { DownloadsTab } from "@/components/tabs/downloads-tab";
+import { TestTab } from "@/components/tabs/test-tab";
 
 export function AppTabs() {
   return (
@@ -18,6 +19,7 @@ export function AppTabs() {
         <TabsTrigger value="app-reviews">App Reviews</TabsTrigger>
         <TabsTrigger value="rankings">Rankings</TabsTrigger>
         <TabsTrigger value="downloads">Downloads</TabsTrigger>
+        <TabsTrigger value="test">Test</TabsTrigger>
       </TabsList>
       <TabsContent value="dashboard">
         <DashboardTab />
@@ -36,6 +38,9 @@ export function AppTabs() {
       </TabsContent>
       <TabsContent value="downloads">
         <DownloadsTab />
+      </TabsContent>
+      <TabsContent value="test">
+        <TestTab />
       </TabsContent>
     </Tabs>
   );
